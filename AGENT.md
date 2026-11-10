@@ -27,3 +27,8 @@
 
 ## Commands
 - `npm install` · `npm run lint` · `npm run build` (validates configs) · `npm run check`
+
+## README status rule
+Before finishing a task or pushing, rewrite the `## Status` section of `README.md` (recent changes,
+current state, next steps) so the next session has context without reading commit logs. Keep it short
+and accurate; no secrets.

@@ -23,3 +23,15 @@ npm run check
 ```
 
 License: MIT
+
+## Status
+_Last updated: 2026-11-10_
+
+**Recent changes**
+- Initial scaffold: strict `tsconfig.base.json`, ESLint flat config, Prettier, EditorConfig, CI.
+
+**Current state**
+- Consumers mirror these settings; package is not yet published to npm.
+
+**Next steps**
+- Publish to npm so other repos can `extends` it directly.
