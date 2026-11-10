@@ -1,0 +1,38 @@
+{
+  "name": "@akshayanimateddsa/root-config",
+  "version": "0.1.0",
+  "description": "Generic, public shared tooling configuration (TypeScript, ESLint, Prettier, EditorConfig) for the workspace.",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akshay-Gupta-19/root-config.git"
+  },
+  "files": [
+    "tsconfig.base.json",
+    "eslint.config.base.js",
+    ".prettierrc.json",
+    ".editorconfig"
+  ],
+  "exports": {
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./eslint": "./eslint.config.base.js",
+    "./prettier": "./.prettierrc.json"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "build": "node scripts/validate.mjs",
+    "check": "npm run lint && npm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.2"
+  }
+}
