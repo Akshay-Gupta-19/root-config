@@ -1,5 +1,29 @@
 # AGENT.md — root-config
 
+## Start here: rule tree
+Every task starts from this file. This repo is flat, so this file holds all of its rules.
+```
+AGENT.md                     ← you are here: all rules for this repo
+├── scripts/validate.mjs     config sanity check (`npm run build`)
+└── .github/workflows/ci.yml lint + validate on every push to main and every PR
+```
+If a folder ever needs rules of its own, give it an `AGENT.md` and add it to this tree in the same
+change.
+
+## Workspace conventions (every repo follows these)
+- **Rule tree, top-down.** Each repo's root `AGENT.md` starts with a rule tree mapping every folder
+  to its rule file. A task always starts at the root `AGENT.md`; the agent finds the folder for the
+  requested kind of work and reads every rule file on the path down, top to bottom. Lower levels add
+  to their parents' rules and win where they say they override.
+- Middle levels have an `AGENT.md`; leaves have a `README.md` that opens with a "don't start here,
+  read the root `AGENT.md`" line. Each rule lives at the narrowest level it applies to.
+- Adding a folder means, in the same change: add it to the tree and give it its rule file.
+- A root `CLAUDE.md` loads `AGENT.md` so agents read it automatically.
+- **LGTM means go.** When the owner replies "LGTM" (or a clear yes) to a proposed plan, carry it out
+  without waiting for more instructions: make the changes, run the checks, commit, push to the
+  working branch and open a pull request, then report the PR link. Stop and ask only if something
+  comes up that the approved plan doesn't cover.
+
 ## Repository scope & purpose
 - **Type:** Public shared tooling configuration (open source, MIT).
 - **Contains:** generic TypeScript, ESLint, Prettier and EditorConfig settings only.
