@@ -1,6 +1,7 @@
 # root-config
 
 Public, generic tooling configuration shared by the TypeScript repositories in this workspace.
+Rules and workspace conventions: [`AGENT.md`](AGENT.md).
 
 | File | Purpose |
 | --- | --- |
@@ -25,9 +26,12 @@ npm run check
 License: MIT
 
 ## Status
-_Last updated: 2026-11-10_
+_Last updated: 2026-11-13_
 
 **Recent changes**
+- `AGENT.md` now opens with a rule tree and the workspace conventions every repo follows: tasks
+  start at the root `AGENT.md` and read rule files top-down; "LGTM" on a plan means make the change
+  and open the PR. Added a root `CLAUDE.md` that loads `AGENT.md`.
 - Initial scaffold: strict `tsconfig.base.json`, ESLint flat config, Prettier, EditorConfig, CI.
 
 **Current state**
