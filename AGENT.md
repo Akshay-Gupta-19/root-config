@@ -4,8 +4,9 @@
 Every task starts from this file. This repo is flat, so this file holds all of its rules.
 ```
 AGENT.md                     ← you are here: all rules for this repo
-├── scripts/validate.mjs     config sanity check (`npm run build`)
-└── .github/workflows/ci.yml lint + validate on every push to main and every PR
+├── scripts/validate.mjs          config sanity check (`npm run build`)
+├── .github/workflows/ci.yml      lint + validate + pack check on every push to main and every PR
+└── .github/workflows/publish.yml publishes to npm when a new version reaches main
 ```
 If a folder ever needs rules of its own, give it an `AGENT.md` and add it to this tree in the same
 change.
@@ -25,9 +26,24 @@ change.
   comes up that the approved plan doesn't cover.
 
 ## Repository scope & purpose
-- **Type:** Public shared tooling configuration (open source, MIT).
-- **Contains:** generic TypeScript, ESLint, Prettier and EditorConfig settings only.
-- **Not deployed** and not an application. It is a configuration base other repos mirror or extend.
+- **Type:** Public collection of shared npm packages (open source, MIT), published under the
+  `@akshayanimateddsa` scope. Not deployed and not an application.
+- **Today:** one package, `@akshayanimateddsa/root-config`: generic TypeScript, ESLint, Prettier and
+  EditorConfig settings, at the repo root.
+- **Planned:** generic building blocks for the websites' visual labs (graph, tree, array,
+  recursion-tree shapes), as their own package. Only generic pieces live here: a demo's motion,
+  steps and page stay in the website that sells or shows it. Reels and other media never depend on
+  website packages; the only code both sides may share is pure, headless helpers (no DOM, markup or
+  framework).
+
+## Releasing
+- Publishing is automatic: `.github/workflows/publish.yml` runs on every push to `main` and
+  publishes when `package.json`'s version isn't on npm yet. To release, bump `version` in a PR.
+- Semver: changing or removing a rule or export is a breaking change for every consumer (minor
+  bump while `0.x`, major after `1.0`); adding is a patch or minor. Say which in the PR.
+- Auth is npm trusted publishing (OIDC), so no token is stored; only a brand-new package's first
+  publish needs a short-lived `NPM_TOKEN` secret. Steps in `README.md` "Releasing".
+- Check what would ship with `npm pack --dry-run` (part of `npm run check`).
 
 ## Dependency boundaries
 - This repo depends on **nothing** in the workspace. It sits at the bottom of the graph.
@@ -46,11 +62,10 @@ change.
   `exactOptionalPropertyTypes`, `verbatimModuleSyntax`).
 - ESLint flat config with `typescript-eslint` strict + stylistic presets.
 - ESM only (`"type": "module"`), Node >= 20.
-- Changing a rule here is a breaking change for every consumer: bump the version and note it in the
-  commit message.
 
 ## Commands
-- `npm install` · `npm run lint` · `npm run build` (validates configs) · `npm run check`
+- `npm install` · `npm run lint` · `npm run build` (validates configs) · `npm run check` (all three
+  plus `npm pack --dry-run`)
 
 ## README status rule
 Before finishing a task or pushing, rewrite the `## Status` section of `README.md` (recent changes,
