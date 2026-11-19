@@ -1,12 +1,14 @@
 # AGENT.md — root-config
 
 ## Start here: rule tree
-Every task starts from this file. This repo is flat, so this file holds all of its rules.
+Every task starts from this file. The repo root is the `root-config` package; each other package is
+a leaf under `packages/` with its own `README.md`.
 ```
-AGENT.md                     ← you are here: all rules for this repo
+AGENT.md                     ← you are here: repo-wide rules, and the root-config package's
+├── packages/visual-lab/README.md  @akshayanimateddsa/visual-lab: generic algorithm-animation views
 ├── scripts/validate.mjs          config sanity check (`npm run build`)
-├── .github/workflows/ci.yml      lint + validate + pack check on every push to main and every PR
-└── .github/workflows/publish.yml publishes to npm when a new version reaches main
+├── .github/workflows/ci.yml      lint + build + test + pack check on every push to main and every PR
+└── .github/workflows/publish.yml publishes every package whose version npm doesn't have yet
 ```
 If a folder ever needs rules of its own, give it an `AGENT.md` and add it to this tree in the same
 change.
@@ -28,17 +30,17 @@ change.
 ## Repository scope & purpose
 - **Type:** Public collection of shared npm packages (open source, MIT), published under the
   `@akshayanimateddsa` scope. Not deployed and not an application.
-- **Today:** one package, `@akshayanimateddsa/root-config`: generic TypeScript, ESLint, Prettier and
-  EditorConfig settings, at the repo root.
-- **Planned:** generic building blocks for the websites' visual labs (graph, tree, array,
-  recursion-tree shapes), as their own package. Only generic pieces live here: a demo's motion,
-  steps and page stay in the website that sells or shows it. Reels and other media never depend on
+- **Packages** (npm workspaces): `@akshayanimateddsa/root-config` at the repo root (generic TypeScript,
+  ESLint, Prettier and EditorConfig settings) and `packages/*`: today `@akshayanimateddsa/visual-lab`
+  (the websites' visual-lab views: array, graph, tree, recursion tree). Only generic pieces live here:
+  a demo's steps, explanations and page stay in the website that sells or shows it. Reels and other media never depend on
   website packages; the only code both sides may share is pure, headless helpers (no DOM, markup or
   framework).
 
 ## Releasing
 - Publishing is automatic: `.github/workflows/publish.yml` runs on every push to `main` and
-  publishes when `package.json`'s version isn't on npm yet. To release, bump `version` in a PR.
+  publishes each package (the root and every `packages/*`) whose `version` isn't on npm yet. To
+  release one, bump its `version` in a PR; each package has its own version.
 - Semver: changing or removing a rule or export is a breaking change for every consumer (minor
   bump while `0.x`, major after `1.0`); adding is a patch or minor. Say which in the PR.
 - Auth is npm trusted publishing (OIDC), so no token is stored; only a brand-new package's first
@@ -47,12 +49,13 @@ change.
 
 ## Dependency boundaries
 - This repo depends on **nothing** in the workspace. It sits at the bottom of the graph.
-- Shared libraries and leaf projects may consume these configs; this repo must never import from
-  them, and must never reference `workspace-meta` (private).
+- Shared libraries and leaf projects may consume these packages; this repo must never import from
+  them, and must never reference `workspace-meta` (private). Packages here depend on each other only
+  by their published names, and have no runtime dependencies outside this repo.
 - No circular dependencies.
 
 ## Security & secret hygiene (PUBLIC REPO)
-- **Only generic configuration.** Zero secrets, API keys, tokens, credentials, `.env` files,
+- **Only generic code and configuration.** Zero secrets, API keys, tokens, credentials, `.env` files,
   internal hostnames/endpoints, private notes, roadmaps or personal data.
 - Private planning belongs in `workspace-meta`, never here.
 - Before every commit: `git diff --cached` and confirm nothing project-specific or sensitive is staged.
@@ -64,8 +67,8 @@ change.
 - ESM only (`"type": "module"`), Node >= 20.
 
 ## Commands
-- `npm install` · `npm run lint` · `npm run build` (validates configs) · `npm run check` (all three
-  plus `npm pack --dry-run`)
+- `npm install` · `npm run lint` · `npm run build` (validates configs, builds every package) ·
+  `npm test` (every package's tests) · `npm run check` (all of them plus `npm pack --dry-run` of each)
 
 ## README status rule
 Before finishing a task or pushing, rewrite the `## Status` section of `README.md` (recent changes,

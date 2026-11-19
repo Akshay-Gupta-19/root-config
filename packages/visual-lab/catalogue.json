@@ -1,0 +1,45 @@
+{
+  "$comment": "Every export of @akshayanimateddsa/visual-lab, one line each (test/catalogue.test.js checks this list against the code). Views: `el` + `update(state, ctx)`; their state shapes are in each file's header.",
+  "views": {
+    "ArrayView": "An array: cells, values, tones, pointers, sliding windows, floating values, arc arrows; moves by id.",
+    "GraphView": "A graph: fixed or circular vertex positions; directed, weighted, curved, parallel and self-loop edges.",
+    "TreeView": "A rooted tree (binary keeps left/right sides; n-ary by leaf order), laid out automatically; trie rings.",
+    "CallTreeView": "A recursion tree: calls appear in fixed slots as they happen, memo hits as dashed links, a note over the root.",
+    "NodeLinkView": "The node-edge engine the graph, tree and call tree use: shapes, tones, edges, pointers, icons, badges, tweened geometry."
+  },
+  "helpers": {
+    "edgeKey": "The edgeTones key of an edge between two vertices (directed or not).",
+    "undirectedKey": "The id of an undirected edge, the same either way round.",
+    "normalizePointers": "Pointer state in short or long form to a list ready to draw.",
+    "pointerColor": "A pointer's colour from its tone or its name (i, left, mid, slow…).",
+    "pointerOffset": "The y offset of a stacked pointer at a level.",
+    "pointersHeight": "The height taken by stacked pointer rows.",
+    "POINTER_HEAD": "Pointer arrow height (px); matches .av-pointer.",
+    "POINTER_ROW": "Height of each stacked pointer name row (px).",
+    "POINTER_EDGE": "Room kept at each side for a pointer name wider than its cell (px).",
+    "MOTIONS": "The motion profiles: Crisp, Smooth, Bouncy (scale, easing, CSS easing).",
+    "spring": "An underdamped spring easing that settles by t = 1.",
+    "cssLinear": "A CSS linear() easing sampled from an easing function.",
+    "easeOutQuart": "Ease-out quartic (Crisp).",
+    "easeOutQuint": "Ease-out quintic (Smooth, the default).",
+    "setMotionEase": "Sets where tweens read their easing from (a site's motion setting).",
+    "motionEase": "The easing tweens use now.",
+    "tween": "A numeric tween for SVG geometry, eased with the motion in use; returns cancel.",
+    "lerp": "Linear interpolation.",
+    "h": "Creates an HTML element with attributes and children.",
+    "s": "Creates an SVG element with attributes and children.",
+    "setAttrs": "Sets several attributes at once.",
+    "escapeHtml": "Escapes text for HTML.",
+    "richText": "Escaped text with `code` and **bold** allowed.",
+    "setTone": "Replaces an element's tone-* class.",
+    "replayClass": "Restarts a one-shot CSS animation class.",
+    "syncKeyed": "Keyed reconciliation of children so CSS transitions animate moves, enters and leaves.",
+    "playEnter": "Animates an element in from its is-entering styles.",
+    "withoutTransitions": "Runs a re-layout with CSS transitions off.",
+    "onResize": "Observes an element's width."
+  },
+  "css": {
+    "css/tokens.css": "Default design tokens (colours, fonts, timing, view colours), the .tone-* vocabulary and .no-anim.",
+    "css/visual-lab.css": "Styles for ArrayView (.av-*) and NodeLinkView (.nl-*)."
+  }
+}

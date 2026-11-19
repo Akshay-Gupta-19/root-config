@@ -1,0 +1,71 @@
+/* @akshayanimateddsa/visual-lab: default design tokens for the views (colours, fonts, timing), the tone
+   vocabulary (.tone-*) and .no-anim. Optional: a site may define these itself. Moved from the DSA
+   Visual Lab's tokens.css, with the view colours (--vz-*) of its default theme. */
+
+:root {
+  --bg: #060a18;
+  --bg-elevated: #0b1228;
+  --surface: #0f1833;
+  --surface-2: #142045;
+  --border: rgba(125, 165, 255, 0.14);
+  --border-strong: rgba(125, 165, 255, 0.28);
+
+  --text: #e8edfb;
+  --text-muted: #9aa6c7;
+  --text-dim: #6a769a;
+
+  --cyan: #22d3ee;
+  --green: #34d399;
+  --amber: #fbbf24;
+  --pink: #f472b6;
+  --violet: #a78bfa;
+  --red: #f87171;
+
+  --gradient: linear-gradient(120deg, var(--cyan), var(--green));
+  --on-accent: #04121a; /* text on the gradient and on solid accent badges */
+  --glow-cyan: 0 0 24px rgba(34, 211, 238, 0.35);
+
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --container: 1280px;
+  --gutter: clamp(16px, 4vw, 32px);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Animation length of one step transition. The player rewrites this on the
+     visualizer root when the playback speed changes. */
+  --viz-dur: 600ms;
+
+  /* View colours (a theme may override them on any ancestor). */
+  --vz-node: var(--surface-2);          /* nodes and array cells */
+  --vz-node-stroke: var(--border-strong);
+  --vz-node-text: var(--text);
+  --vz-edge: rgba(125, 165, 255, 0.34); /* graph edges and list links */
+  --vz-drop: #000;                      /* drop shadows under lifted items */
+}
+
+/* ---------- Semantic tones ----------
+   One vocabulary shared by every component. A component sets `tone-<name>`
+   on an element and styles it through `--tone`. */
+.tone-current,
+.tone-active { --tone: var(--amber); }
+.tone-compare { --tone: var(--violet); }
+.tone-discovered,
+.tone-new { --tone: var(--cyan); }
+.tone-done,
+.tone-found,
+.tone-path { --tone: var(--green); }
+.tone-target { --tone: var(--pink); }
+.tone-error,
+.tone-removed { --tone: var(--red); }
+.tone-muted { --tone: var(--text-dim); }
+
+/* Layout changes that should not animate (e.g. re-layout after a resize). */
+.no-anim,
+.no-anim * {
+  transition: none !important;
+}
