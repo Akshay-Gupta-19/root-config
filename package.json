@@ -4,7 +4,6 @@
   "description": "Generic, public shared tooling configuration (TypeScript, ESLint, Prettier, EditorConfig) for the workspace.",
   "license": "MIT",
   "type": "module",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Akshay-Gupta-19/root-config.git"
@@ -26,7 +25,7 @@
   "scripts": {
     "lint": "eslint .",
     "build": "node scripts/validate.mjs",
-    "check": "npm run lint && npm run build"
+    "check": "npm run lint && npm run build && npm pack --dry-run"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -34,5 +33,33 @@
     "globals": "^17.14.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.72.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "peerDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.2"
+  },
+  "peerDependenciesMeta": {
+    "@eslint/js": {
+      "optional": true
+    },
+    "eslint": {
+      "optional": true
+    },
+    "globals": {
+      "optional": true
+    },
+    "typescript": {
+      "optional": true
+    },
+    "typescript-eslint": {
+      "optional": true
+    }
   }
 }

@@ -1,0 +1,41 @@
+# Publishes the package to npm when a version that npm doesn't have yet reaches main.
+# Releasing = bump "version" in package.json in a PR; merging it publishes. Auth is npm trusted
+# publishing (OIDC: no stored token). Only the very first publish, before the package exists on
+# npm, uses a short-lived NPM_TOKEN secret, deleted afterwards (README "Releasing").
+name: Publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # trusted publishing + provenance (links each release to this run)
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - run: npm install -g npm@11 # trusted publishing needs npm 11.5+
+      - run: npm ci
+      - run: npm run check
+      - name: Publish if this version is new
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          name=$(node -p "require('./package.json').name")
+          version=$(node -p "require('./package.json').version")
+          if npm view "$name@$version" version >/dev/null 2>&1; then
+            echo "$name@$version is already on npm; nothing to publish."
+          else
+            npm publish || {
+              echo "::error::Publishing failed. Is this repo set as the package's trusted publisher on npmjs.com (README 'Releasing')?"
+              exit 1
+            }
+          fi

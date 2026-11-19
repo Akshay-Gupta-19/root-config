@@ -1,6 +1,6 @@
 // Generic strict ESLint flat config shared by every TypeScript repo in the workspace.
-// Usage in a consuming repo (eslint.config.js):
-//   import base from './eslint.config.base.js'; export default [...base];
+// Usage in a consuming repo (eslint.config.js), after `npm i -D @akshayanimateddsa/root-config`:
+//   import base from '@akshayanimateddsa/root-config/eslint'; export default [...base];
 import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
