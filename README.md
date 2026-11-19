@@ -73,9 +73,10 @@ _Last updated: 2026-11-19_
 - `@akshayanimateddsa/root-config` `0.1.0` is on npm.
 
 **Current state**
-- `visual-lab` `0.1.0` is not on npm yet: its first publish needs the one-time token ("Releasing").
-- Checked against the DSA lab: with its views replaced by this package, all of its browser tests pass.
+- Both packages are on npm (`root-config` 0.1.0, `visual-lab` 0.1.0), published by `Publish` through
+  trusted publishing; later releases need only a version bump.
+- `visual-lab` is used by the Akshay Animated DSA Visual Lab (all its browser tests pass on it).
 
 **Next steps**
-- First publish of `visual-lab`, then its trusted publisher (steps above).
-- The DSA site loads it from its `public/vendor/`; then the other sites' labs build on it.
+- Other sites' labs build on `visual-lab`; generic views they need go into it (each with its
+  `catalogue.json` line).
