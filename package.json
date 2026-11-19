@@ -14,6 +14,9 @@
     ".prettierrc.json",
     ".editorconfig"
   ],
+  "workspaces": [
+    "packages/*"
+  ],
   "exports": {
     "./tsconfig.base.json": "./tsconfig.base.json",
     "./eslint": "./eslint.config.base.js",
@@ -24,8 +27,9 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "build": "node scripts/validate.mjs",
-    "check": "npm run lint && npm run build && npm pack --dry-run"
+    "build": "node scripts/validate.mjs && npm run build --workspaces",
+    "check": "npm run lint && npm run build && npm test && npm pack --dry-run && npm pack --dry-run --workspaces",
+    "test": "npm test --workspaces"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

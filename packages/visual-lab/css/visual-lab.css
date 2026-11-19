@@ -1,0 +1,362 @@
+/* @akshayanimateddsa/visual-lab: styles for ArrayView (.av-*) and NodeLinkView (.nl-*: GraphView, TreeView,
+   CallTreeView). Colours, fonts and timing come from custom properties (css/tokens.css has defaults;
+   a site may set its own). Moved from the DSA Visual Lab's array.css and diagrams.css. */
+
+/* ==========================================================================
+   ArrayView
+   ========================================================================== */
+
+.av {
+  --cell: 56px;
+  --move: var(--viz-dur) var(--ease);
+  position: relative;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  transition: height var(--move);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.av-track {
+  position: relative;
+  height: 100%;
+  margin-inline: auto;
+}
+
+.av-layer { position: absolute; inset: 0; }
+
+.av-slot,
+.av-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--cell);
+  height: var(--cell);
+  border-radius: 12px;
+}
+
+.av-slot {
+  border: 1px solid var(--vz-node-stroke);
+  background: var(--vz-node);
+  transition: border-color 0.3s, background 0.3s, opacity 0.3s, translate var(--move);
+}
+
+.av-slot.is-empty {
+  border-style: dashed;
+  background: color-mix(in srgb, var(--vz-node) 35%, transparent);
+}
+
+.av-slot[class*="tone-"] {
+  border-color: var(--tone);
+  background: color-mix(in srgb, var(--tone) 14%, var(--vz-node));
+}
+
+.av-slot.is-hidden { visibility: hidden; }
+
+.av-slot.is-empty[class*="tone-"] { background: color-mix(in srgb, var(--tone) 8%, transparent); }
+
+.av-slot.is-dim,
+.av-item.is-dim { opacity: 0.28; }
+
+.av-slot.is-flash { animation: av-flash 0.9s var(--ease); }
+
+@keyframes av-flash {
+  25% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--tone, var(--cyan)) 35%, transparent); }
+}
+
+.av-index {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 5px);
+  text-align: center;
+  font: 0.88rem var(--font-mono);
+  color: var(--text-dim);
+}
+
+.av-slot[class*="tone-"] .av-index { color: var(--tone); font-weight: 600; }
+
+.av-item {
+  display: grid;
+  place-items: center;
+  font: 600 calc(var(--cell) * 0.32) var(--font-mono);
+  color: var(--vz-node-text);
+  transition: translate var(--move), scale var(--move), opacity var(--move), color 0.3s;
+  pointer-events: none;
+}
+
+.av-item[class*="tone-"] { color: color-mix(in srgb, var(--tone) 40%, var(--vz-node-text)); }
+
+.av-item.tone-found { text-shadow: 0 0 12px var(--green); }
+
+/* A value hovering above the array (being inserted or just removed). */
+.av-item.is-floating {
+  border: 1px solid var(--tone, var(--cyan));
+  background: color-mix(in srgb, var(--tone, var(--cyan)) 18%, var(--surface-2));
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--vz-drop) 35%, transparent), 0 0 18px color-mix(in srgb, var(--tone, var(--cyan)) 30%, transparent);
+}
+
+.av-item.is-entering { opacity: 0; scale: 0.5; }
+.av-item.is-leaving { opacity: 0; scale: 0.6; }
+
+.av-item.is-updated span { animation: av-update 0.7s var(--ease); display: inline-block; }
+
+@keyframes av-update {
+  0% { transform: translateY(-40%); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+
+/* Sliding window */
+.av-window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 2px solid var(--tone, var(--cyan));
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--tone, var(--cyan)) 6%, transparent);
+  box-shadow: 0 0 22px color-mix(in srgb, var(--tone, var(--cyan)) 30%, transparent);
+  transition: translate var(--move), width var(--move), opacity 0.3s;
+  pointer-events: none;
+}
+
+.av-window.is-empty { opacity: 0.35; }
+.av-window.is-entering, .av-window.is-leaving { opacity: 0; }
+
+.av-window-label {
+  position: absolute;
+  bottom: calc(100% + 3px);
+  left: 6px;
+  font: 600 0.88rem var(--font-mono);
+  color: var(--tone, var(--cyan));
+  white-space: nowrap;
+}
+
+/* Pointers: an arrow (head + stem) over the name. The head is POINTER_HEAD px
+   and each name row POINTER_ROW px tall (pointers.js); keep them in step. */
+.av-pointer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font: 600 1.1rem/24px var(--font-mono);
+  color: var(--ptr, var(--cyan));
+  white-space: nowrap;
+  transition: translate var(--move), opacity 0.3s;
+}
+
+.av-pointer::before {
+  content: "";
+  border: 0 solid transparent;
+  border-width: 0 9px 12px;
+  border-bottom-color: currentColor;
+}
+
+.av-pointer::after {
+  content: "";
+  width: 3px;
+  height: 12px;
+  margin-bottom: 2px;
+  border-radius: 0 0 2px 2px;
+  background: currentColor;
+}
+
+/* The stem (::after) goes between the head and the name. */
+.av-pointer span { order: 1; }
+
+/* A long pointer: the stem one name row (POINTER_ROW) longer, so its name sits a row lower. */
+.av-pointer.is-long::after { height: 36px; }
+
+.av-pointer.is-stacked::before,
+.av-pointer.is-stacked::after { display: none; }
+.av-pointer.is-entering, .av-pointer.is-leaving { opacity: 0; }
+
+/* Arc arrows */
+.av-arrows {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.av-arrow {
+  color: var(--tone, var(--amber));
+  animation: av-arrow-in var(--viz-dur) var(--ease);
+}
+
+.av-arrow path { fill: none; stroke: currentColor; stroke-width: 2; stroke-dasharray: 5 4; }
+.av-arrow polygon { fill: currentColor; }
+.av-arrow text { fill: currentColor; font: 600 13px var(--font-mono); text-anchor: middle; }
+
+@keyframes av-arrow-in {
+  from { opacity: 0; }
+}
+
+/* A picture above the value (state.icons): the number moves under it. */
+.av-icon { display: none; }
+
+.av-item.has-icon {
+  grid-template-rows: auto auto;
+  align-content: center;
+  gap: 2px;
+  font-size: calc(var(--cell) * 0.22);
+}
+
+.av-item.has-icon .av-icon {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: calc(var(--cell) * 0.56);
+}
+
+.av-icon svg { display: block; height: 100%; width: auto; max-width: calc(var(--cell) * 0.8); overflow: visible; }
+
+.av-item.has-icon.is-dim .av-icon { filter: grayscale(0.6); }
+
+/* Window label icon (e.g. a painter before "P1 · 46"). */
+.av-window-label { display: inline-flex; align-items: center; gap: 4px; }
+.av-window-icon { display: inline-flex; width: 14px; height: 14px; }
+.av-window-icon[hidden] { display: none; }
+.av-window-icon svg { width: 100%; height: 100%; }
+
+/* Filled cells (option `filled`): the tone fills the whole box. */
+.av--filled .av-slot[class*="tone-"] {
+  background: color-mix(in srgb, var(--tone) 55%, var(--surface-2));
+  box-shadow: 0 0 14px color-mix(in srgb, var(--tone) 30%, transparent);
+}
+
+.av--filled .av-index { font-size: 0.98rem; font-weight: 600; color: var(--text-muted); }
+.av--filled .av-slot,
+.av--filled .av-item { border-radius: 7px; }
+
+/* ==========================================================================
+   NodeLinkView — shared by LinkedListView, TreeView and GraphView
+   ========================================================================== */
+
+.nl {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  margin-inline: auto;
+}
+
+/* Edges */
+.nl-edge {
+  color: var(--tone, var(--vz-edge));
+  transition: color 0.35s, opacity var(--viz-dur);
+}
+
+.nl-line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  transition: stroke-width 0.3s;
+}
+
+.nl-edge[class*="tone-"] .nl-line { stroke-width: 3.4; }
+.nl-edge.tone-current .nl-line { filter: drop-shadow(0 0 6px color-mix(in srgb, var(--amber) 55%, transparent)); }
+.nl-edge.tone-muted { opacity: 0.5; }
+.nl-edge.is-dashed .nl-line { stroke-dasharray: 6 6; }
+
+.nl-head { fill: currentColor; }
+
+.nl-weight rect { fill: var(--bg-elevated); stroke: currentColor; stroke-width: 1; }
+.nl-weight text {
+  fill: var(--text);
+  font: 600 13px var(--font-mono);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.nl-edge.is-entering, .nl-edge.is-leaving { opacity: 0; }
+
+/* Nodes */
+.nl-node { transition: opacity var(--viz-dur); }
+
+.nl-shape {
+  fill: var(--vz-node);
+  stroke: var(--vz-node-stroke);
+  stroke-width: 2;
+  transition: fill 0.35s, stroke 0.35s, stroke-width 0.35s;
+}
+
+.nl-node[class*="tone-"] .nl-shape {
+  stroke: var(--tone);
+  stroke-width: 2.5;
+  fill: color-mix(in srgb, var(--tone) 22%, var(--vz-node));
+}
+
+.nl-node.tone-current .nl-shape,
+.nl-node.tone-found .nl-shape {
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--tone) 70%, transparent));
+}
+
+.nl-node.tone-muted { opacity: 0.45; }
+
+/* A node's second ring (a trie node where a word ends); hidden unless the node has one */
+.nl-ring { fill: none; stroke: var(--vz-node-stroke); stroke-width: 2; opacity: 0; transition: opacity 0.35s, stroke 0.35s; }
+.nl-node.has-ring .nl-ring { opacity: 1; }
+.nl-node.has-ring[class*="tone-"] .nl-ring { stroke: var(--tone); }
+
+.nl-label {
+  fill: var(--vz-node-text);
+  font: 600 16px var(--font-mono);
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+.nl-sub {
+  fill: var(--text-dim);
+  font: 500 14px var(--font-mono);
+  text-anchor: middle;
+}
+
+.nl-node[class*="tone-"] .nl-sub { fill: var(--tone); }
+
+.nl-divider { stroke: var(--vz-node-stroke); stroke-width: 1.5; }
+.nl-node[class*="tone-"] .nl-divider { stroke: var(--tone); }
+.nl-dot { fill: var(--text-muted); }
+
+/* A box's icon (a bag or jar, filled from the bottom; ✕ when the call failed), its coin badge,
+   and the coin by a returned value */
+.nl-icon-line { fill: none; stroke: var(--vz-node-text); stroke-width: 1.4; stroke-linejoin: round; opacity: 0.85; }
+.nl-icon-fill { fill: color-mix(in srgb, var(--amber) 50%, var(--red)); opacity: 0.9; transition: y 0.35s, height 0.35s; }
+.nl-icon[data-kind="bag"].is-full .nl-icon-fill { fill: var(--red); }
+.nl-coin circle { fill: #fcd34d; stroke: #b45309; stroke-width: 1.2; } /* gold in every theme, apart from the orange bag */
+.nl-coin .nl-coin-rim { fill: none; stroke-width: 1; }
+.nl-badge text { fill: #78350f; font: 700 10px var(--font-mono); text-anchor: middle; dominant-baseline: central; }
+.nl-icon-cross { display: none; fill: none; stroke: var(--red); stroke-width: 2.2; stroke-linecap: round; }
+.nl-icon.is-crossed .nl-icon-cross { display: inline; }
+
+/* The null marker of a linked list */
+.nl-node.nl-node--text .nl-shape { fill: transparent; stroke: transparent; filter: none; }
+.nl-node--text .nl-label { fill: var(--text-dim); font-size: 15px; font-weight: 500; }
+.nl-node--text.tone-muted { opacity: 1; }
+
+.nl-node.is-entering { opacity: 0; }
+.nl-node.is-leaving { opacity: 0; }
+
+/* Pointer labels */
+.nl-pointer {
+  color: var(--ptr, var(--cyan));
+  transition: opacity 0.3s;
+}
+
+.nl-pointer text {
+  fill: currentColor;
+  font: 700 14px var(--font-mono);
+  text-anchor: middle;
+  /* A halo in the box's colour keeps the name readable where it crosses an edge */
+  paint-order: stroke;
+  stroke: var(--vz-bg);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.nl-pointer path { fill: currentColor; }
+.nl-pointer.is-leaving { opacity: 0; }

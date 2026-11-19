@@ -1,7 +1,7 @@
-# Publishes the package to npm when a version that npm doesn't have yet reaches main.
-# Releasing = bump "version" in package.json in a PR; merging it publishes. Auth is npm trusted
-# publishing (OIDC: no stored token). Only the very first publish, before the package exists on
-# npm, uses a short-lived NPM_TOKEN secret, deleted afterwards (README "Releasing").
+# Publishes every package (the root one and each packages/*) whose version npm doesn't have yet,
+# when it reaches main. Releasing = bump that package's "version" in a PR; merging it publishes.
+# Auth is npm trusted publishing (OIDC: no stored token). Only a package's very first publish, before
+# it exists on npm, uses a short-lived NPM_TOKEN secret, deleted afterwards (README "Releasing").
 name: Publish
 
 on:
@@ -25,17 +25,22 @@ jobs:
       - run: npm install -g npm@11 # trusted publishing needs npm 11.5+
       - run: npm ci
       - run: npm run check
-      - name: Publish if this version is new
+      - name: Publish each package whose version is new
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          name=$(node -p "require('./package.json').name")
-          version=$(node -p "require('./package.json').version")
-          if npm view "$name@$version" version >/dev/null 2>&1; then
-            echo "$name@$version is already on npm; nothing to publish."
-          else
-            npm publish || {
-              echo "::error::Publishing failed. Is this repo set as the package's trusted publisher on npmjs.com (README 'Releasing')?"
-              exit 1
-            }
-          fi
+          failed=0
+          for dir in . packages/*; do
+            [ -f "$dir/package.json" ] || continue
+            name=$(node -p "require('./$dir/package.json').name")
+            version=$(node -p "require('./$dir/package.json').version")
+            if npm view "$name@$version" version >/dev/null 2>&1; then
+              echo "$name@$version is already on npm; nothing to publish."
+            elif (cd "$dir" && npm publish); then
+              echo "Published $name@$version."
+            else
+              echo "::error::Publishing $name@$version failed. Is this repo its trusted publisher on npmjs.com, or (a new package) is NPM_TOKEN set? README 'Releasing'."
+              failed=1
+            fi
+          done
+          exit $failed

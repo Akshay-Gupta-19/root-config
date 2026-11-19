@@ -44,13 +44,13 @@ export function pointerColor(name: string, tone?: string | null): string {
 /** A pointer in long form. `at` is an index or a node id; `null` / `undefined` hides it. */
 export interface PointerSpec {
   name: string;
-  at?: string | number | null;
-  tone?: string | null;
-  label?: string;
+  at?: string | number | null | undefined;
+  tone?: string | null | undefined;
+  label?: string | undefined;
   /** NodeLinkView: above (default) or below the node. */
-  side?: 'top' | 'bottom';
+  side?: 'top' | 'bottom' | undefined;
   /** ArrayView: a longer stem, its name one row lower. */
-  long?: boolean;
+  long?: boolean | undefined;
 }
 
 /** The pointers state: `{ i: 2 }`, `{ i: { at: 2, tone: "compare" } }` or `[{ name, at, … }]`. */
@@ -62,7 +62,7 @@ export interface Pointer extends PointerSpec {
   label: string;
   color: string;
   /** Its place in the stack at the same index (set by the view). */
-  level?: number;
+  level?: number | undefined;
 }
 
 /** Normalise pointer state; entries with `at == null` are hidden. */

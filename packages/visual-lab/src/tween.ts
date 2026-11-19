@@ -14,7 +14,6 @@ export function tween(duration: number, onFrame: (t: number) => void): () => voi
     onFrame(1);
     return () => undefined;
   }
-  let fallback: ReturnType<typeof setTimeout> | undefined;
   const finish = (): void => {
     if (done) return;
     done = true;
@@ -36,7 +35,7 @@ export function tween(duration: number, onFrame: (t: number) => void): () => voi
   };
   raf = requestAnimationFrame(tick);
   // Background tabs pause animation frames; still land on the final geometry.
-  fallback = setTimeout(finish, duration + 60);
+  const fallback = setTimeout(finish, duration + 60);
   return () => {
     done = true;
     cancelAnimationFrame(raf);

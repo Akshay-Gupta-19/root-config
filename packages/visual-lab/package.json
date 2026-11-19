@@ -1,0 +1,37 @@
+{
+  "name": "@akshayanimateddsa/visual-lab",
+  "version": "0.1.0",
+  "description": "Generic views for step-by-step algorithm animations (array, graph, tree, recursion tree), drawn from plain state objects. Plain DOM and SVG, no framework.",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akshay-Gupta-19/root-config.git",
+    "directory": "packages/visual-lab"
+  },
+  "keywords": ["algorithm", "visualization", "animation", "data-structures", "svg"],
+  "sideEffects": ["*.css"],
+  "files": ["dist", "css", "catalogue.json"],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./css/*": "./css/*",
+    "./catalogue.json": "./catalogue.json"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.json",
+    "test": "node --test \"test/*.test.js\"",
+    "check": "npm run build && npm test && npm pack --dry-run"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
