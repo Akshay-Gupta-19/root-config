@@ -1,31 +1,20 @@
 # AGENT.md — root-config
 
 ## Start here: rule tree
-Every task starts from this file. The repo root is the `root-config` package; each other package is
-a leaf under `packages/` with its own `README.md`.
+This file holds only technical rules: the shared code and tooling this repo publishes. Every task
+starts here, then goes down the tree to the folder being changed, reading every `AGENT.md` on the
+way (lower levels add to their parents and win where they conflict). Each `AGENT.md` has a
+`CLAUDE.md` beside it that loads it; `README.md` files describe a folder for people and hold no
+rules.
 ```
-AGENT.md                     ← you are here: repo-wide rules, and the root-config package's
-├── packages/visual-lab/README.md  @akshayanimateddsa/visual-lab: generic algorithm-animation views
-├── scripts/validate.mjs          config sanity check (`npm run build`)
-├── .github/workflows/ci.yml      lint + build + test + pack check on every push to main and every PR
-└── .github/workflows/publish.yml publishes every package whose version npm doesn't have yet
+AGENT.md                            ← you are here: repo-wide technical rules, and the root-config package's
+├── packages/visual-lab/AGENT.md    @akshayanimateddsa/visual-lab: generic algorithm-animation views
+├── scripts/validate.mjs            config sanity check (`npm run build`)
+├── .github/workflows/ci.yml        lint + build + test + pack check on every push to main and every PR
+└── .github/workflows/publish.yml   publishes every package whose version npm doesn't have yet
 ```
-If a folder ever needs rules of its own, give it an `AGENT.md` and add it to this tree in the same
-change.
-
-## Workspace conventions (every repo follows these)
-- **Rule tree, top-down.** Each repo's root `AGENT.md` starts with a rule tree mapping every folder
-  to its rule file. A task always starts at the root `AGENT.md`; the agent finds the folder for the
-  requested kind of work and reads every rule file on the path down, top to bottom. Lower levels add
-  to their parents' rules and win where they say they override.
-- Middle levels have an `AGENT.md`; leaves have a `README.md` that opens with a "don't start here,
-  read the root `AGENT.md`" line. Each rule lives at the narrowest level it applies to.
-- Adding a folder means, in the same change: add it to the tree and give it its rule file.
-- A root `CLAUDE.md` loads `AGENT.md` so agents read it automatically.
-- **LGTM means go.** When the owner replies "LGTM" (or a clear yes) to a proposed plan, carry it out
-  without waiting for more instructions: make the changes, run the checks, commit, push to the
-  working branch and open a pull request, then report the PR link. Stop and ask only if something
-  comes up that the approved plan doesn't cover.
+A new package or folder with rules gets its `AGENT.md` + `CLAUDE.md` pair and a line in this tree
+in the same change.
 
 ## Repository scope & purpose
 - **Type:** Public collection of shared npm packages (open source, MIT), published under the
@@ -57,7 +46,7 @@ change.
 ## Security & secret hygiene (PUBLIC REPO)
 - **Only generic code and configuration.** Zero secrets, API keys, tokens, credentials, `.env` files,
   internal hostnames/endpoints, private notes, roadmaps or personal data.
-- Private planning belongs in `workspace-meta`, never here.
+- Private planning belongs in a private repo, never here.
 - Before every commit: `git diff --cached` and confirm nothing project-specific or sensitive is staged.
 
 ## Tech stack standards
