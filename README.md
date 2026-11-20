@@ -4,7 +4,7 @@ Public collection of shared npm packages for the workspace, published under `@ak
 - `@akshayanimateddsa/root-config` (this folder): generic tooling configuration, below.
 - [`@akshayanimateddsa/visual-lab`](packages/visual-lab/README.md): generic views for step-by-step
   algorithm animations (array, graph, tree, recursion tree), plain DOM and SVG.
-Rules, release process and workspace conventions: [`AGENT.md`](AGENT.md).
+Technical rules and the release process for agents: [`AGENT.md`](AGENT.md) (loaded by `CLAUDE.md`).
 
 | File | Purpose |
 | --- | --- |
@@ -62,9 +62,12 @@ npm run check
 License: MIT
 
 ## Status
-_Last updated: 2026-11-19_
+_Last updated: 2026-11-20_
 
 **Recent changes**
+- Rules: removed the workspace conventions (rule tree text, "LGTM means go"; they now live in the
+  private workspace docs); `AGENT.md` holds only technical rules. `packages/visual-lab` rules moved
+  from its README into a new `AGENT.md` + `CLAUDE.md`; the README (shown on npm) is usage only.
 - New package `@akshayanimateddsa/visual-lab` (`packages/visual-lab`): ArrayView, GraphView,
   TreeView, CallTreeView and their NodeLinkView engine, pointers, DOM helpers, tween and motion
   curves, ported to strict TypeScript from the Akshay Animated DSA Visual Lab, with its CSS, a
