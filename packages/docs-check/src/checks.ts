@@ -79,12 +79,14 @@ const ignoredPath = (token: string, ignore: string[]): boolean =>
 
 /**
  * Every file or folder a rule file (`AGENT.md`, `CLAUDE.md`) names exists in the repository: from
- * the doc's folder, from the root, or as the end of any path in it. Paths outside the repository
+ * the doc's folder, from the root, or as the end of any path in it (a path may start with the
+ * repository's own folder name). Paths outside the repository
  * (`../`), on a line naming another repository, or in `ignorePaths` are skipped.
  */
 export function checkPaths(repo: Repo): Problem[] {
   const others = repo.config.otherRepos ?? [];
   const ignore = repo.config.ignorePaths ?? [];
+  const own = new RegExp(`^${repoName(repo).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/`);
   const all = [...repo.files, ...new Set(repo.files.flatMap((file) => file.split('/').slice(0, -1).map((_, i, parts) => parts.slice(0, i + 1).join('/'))))];
   const problems: Problem[] = [];
   for (const doc of repo.files.filter((file) => /(^|\/)(AGENT|CLAUDE)\.md$/.test(file))) {
@@ -92,7 +94,7 @@ export function checkPaths(repo: Repo): Problem[] {
     const reported = new Set<string>();
     lines.forEach((line, i) => {
       for (const token of pathsIn(line)) {
-        const bare = token.replace(/\/$/, '');
+        const bare = token.replace(/\/$/, '').replace(own, ''); // `this-repo/x.md` is `x.md`
         if (reported.has(token) || ignoredPath(token, ignore) || namesOther(lines, i, others)) continue;
         if (others.includes(bare.split('/')[0] ?? '')) continue;
         if (bare.startsWith('../')) {

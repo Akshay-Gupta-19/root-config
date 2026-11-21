@@ -4,7 +4,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { checkRepo, pathsIn } from '../dist/index.js';
@@ -68,6 +68,12 @@ test('a path a rule file names that does not exist is reported; other repos, exa
     'package.json': JSON.stringify({ docsCheck: { ignorePaths: ['inbox/'] } }),
   });
   assert.deepEqual(messages(ignored), []);
+});
+
+test('a path may start with the repository\'s own folder name', () => {
+  const root = sample();
+  writeFileSync(join(root, 'tools/AGENT.md'), `See \`${basename(root)}/tools/run.ts\`, not \`${basename(root)}/tools/gone.ts\`.\n`);
+  assert.deepEqual(messages(root), [`paths tools/AGENT.md: names ${basename(root)}/tools/gone.ts, which does not exist`]);
 });
 
 test('pathsIn picks paths from backticks and links, and leaves commands, routes and placeholders', () => {
