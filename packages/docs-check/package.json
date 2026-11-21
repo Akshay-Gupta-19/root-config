@@ -1,0 +1,40 @@
+{
+  "name": "@akshayanimateddsa/docs-check",
+  "version": "0.1.0",
+  "description": "Checks that a repository's agent docs stay true to it: AGENT.md / CLAUDE.md pairs and the rule tree, file paths the rule files name, ADR numbering and index, roadmap list numbers and references, and the README status section.",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akshay-Gupta-19/root-config.git",
+    "directory": "packages/docs-check"
+  },
+  "keywords": ["documentation", "lint", "adr", "agents", "claude"],
+  "files": ["dist"],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "docs-check": "dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.json",
+    "test": "node --test \"test/*.test.js\"",
+    "check": "npm run build && npm test && npm pack --dry-run"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
