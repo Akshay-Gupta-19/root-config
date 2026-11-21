@@ -9,6 +9,7 @@ rules.
 ```
 AGENT.md                            ← you are here: repo-wide technical rules, and the root-config package's
 ├── packages/visual-lab/AGENT.md    @akshayanimateddsa/visual-lab: generic algorithm-animation views
+├── packages/docs-check/AGENT.md    @akshayanimateddsa/docs-check: checks a repo's agent docs stay true to it
 ├── scripts/validate.mjs            config sanity check (`npm run build`)
 ├── .github/workflows/ci.yml        lint + build + test + pack check on every push to main and every PR
 └── .github/workflows/publish.yml   publishes every package whose version npm doesn't have yet
@@ -21,7 +22,9 @@ in the same change.
   `@akshayanimateddsa` scope. Not deployed and not an application.
 - **Packages** (npm workspaces): `@akshayanimateddsa/root-config` at the repo root (generic TypeScript,
   ESLint, Prettier and EditorConfig settings) and `packages/*`: today `@akshayanimateddsa/visual-lab`
-  (the websites' visual-lab views: array, graph, tree, recursion tree). Only generic pieces live here:
+  (the websites' visual-lab views: array, graph, tree, recursion tree) and
+  `@akshayanimateddsa/docs-check` (a command that checks a repo's agent docs: rule-file pairs, rule
+  tree, paths, ADRs, roadmap lists, README status). Only generic pieces live here:
   a demo's steps, explanations and page stay in the website that sells or shows it. Reels and other media never depend on
   website packages; the only code both sides may share is pure, headless helpers (no DOM, markup or
   framework).
@@ -55,9 +58,18 @@ in the same change.
 - ESLint flat config with `typescript-eslint` strict + stylistic presets.
 - ESM only (`"type": "module"`), Node >= 20.
 
+## Code and test conventions
+- Every file opens with a comment saying what it is for and how it fits; keep it true.
+- A test that finds its own cases (by reading the code or the docs) first fails loudly if it found
+  none, instead of passing with nothing checked.
+- Test names are sentences stating the behaviour ("a forged signature is refused"), so the list
+  reads as a spec.
+- Tests make no network calls: outside services are replaced by small hand-written fakes.
+- `npm test` also runs `docs-check` on this repo (root `package.json`): keep its docs passing.
+
 ## Commands
 - `npm install` · `npm run lint` · `npm run build` (validates configs, builds every package) ·
-  `npm test` (every package's tests) · `npm run check` (all of them plus `npm pack --dry-run` of each)
+  `npm test` (every package's tests, then `docs-check` on this repo) · `npm run check` (all of them plus `npm pack --dry-run` of each)
 
 ## README status rule
 Before finishing a task or pushing, rewrite the `## Status` section of `README.md` (recent changes,
