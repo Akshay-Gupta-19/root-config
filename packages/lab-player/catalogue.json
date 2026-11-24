@@ -26,7 +26,11 @@
     "mountMotionSetting": "A labelled Motion dropdown placed in a page element; hidden while the choice is off."
   },
   "css": {
-    "css/player.css": "The player box (.vz-*): layout, controls, code and variables panels, legend, step note, operation pop-up, callout (.co), shortcuts list, fullscreen and recording-frame modes, phone layout, syntax colours.",
-    "css/themes.css": "The nine themes: .vz holds Midnight's box tokens, each .vz[data-theme] block overrides the colours (palette, syntax, box, views)."
+    "css/player.css": "The player box (.vz-*): layout, controls, code and variables panels, legend, step note, operation pop-up, callout (.co), shortcuts list, fullscreen and recording-frame modes, phone layout, syntax colours; .vz-detail text hidden in fullscreen.",
+    "css/themes.css": "The nine themes: .vz holds Midnight's box tokens, each .vz[data-theme] block overrides the colours (palette, syntax, box, views).",
+    "css/shell.css": "The lab page frame and page styles: top bar, sidebar, page header (.lib-hero, .eyebrow, .gradient-text), sections, cards, lab-home stage cards, buttons, form controls; accent via --lab-accent."
+  },
+  "page": {
+    "createLabShell": "The lab page frame: a top bar (menu, brand, main-site link) and a sidebar of link groups and numbered, collapsible modules; open on desktop (remembered), an overlay on phones."
   }
 }

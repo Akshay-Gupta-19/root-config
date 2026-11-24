@@ -3,7 +3,8 @@
  * steps as snapshot frames (`createTrace`) and `createVisualizer` plays them in a lab box: the
  * views of `@akshayanimateddsa/visual-lab` (or a site's own) in panels, the step note, Java code and
  * variables, playback controls, keyboard shortcuts, fullscreen and recording-frame modes, nine
- * colour themes and a motion setting. Styles: `css/player.css` and `css/themes.css`.
+ * colour themes and a motion setting. Styles: `css/player.css` and `css/themes.css`; the lab page
+ * frame around it (top bar, sidebar, page header, cards): `createLabShell` and `css/shell.css`.
  * Every export is listed with one line in `catalogue.json` (checked by a test).
  */
 
@@ -34,3 +35,5 @@ export { THEMES, createThemePicker, type Theme } from './themes.js';
 export { currentMotion, setMotion, motionAllowed, setMotionAllowed, onMotionChange } from './motion-choice.js';
 /** The Motion dropdowns: in a control bar, or labelled on a page. */
 export { createMotionPicker, mountMotionSetting } from './motion-picker.js';
+/** The lab page frame: top bar and sidebar of groups and numbered modules (styles: css/shell.css). */
+export { createLabShell, type LabShell, type ShellOptions, type ShellGroup, type ShellModule, type ShellLink } from './shell.js';

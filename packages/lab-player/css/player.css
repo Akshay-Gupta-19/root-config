@@ -842,3 +842,8 @@ html.vz-lock-scroll { overflow: hidden; }
 @keyframes vz-flash {
   30% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--tone) 30%, transparent); }
 }
+
+/* Detail text (window mode only): a view or page marks it .vz-detail, and every fullscreen mode hides
+   it, so fullscreen shows labels, essentials and pop-ups only (the step note and legend are hidden
+   there too). Works for SVG text as well as HTML. */
+.vz.is-fullscreen .vz-detail { display: none !important; }

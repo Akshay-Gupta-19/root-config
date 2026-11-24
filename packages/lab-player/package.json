@@ -1,6 +1,6 @@
 {
   "name": "@akshayanimateddsa/lab-player",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "The step player for visual labs: records an algorithm's steps as snapshot frames and plays them in a lab box with controls, code and variables panels, keyboard shortcuts, fullscreen modes, nine colour themes and a motion setting. Plain DOM, no framework.",
   "license": "MIT",
   "type": "module",
