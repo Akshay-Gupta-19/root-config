@@ -1,0 +1,40 @@
+{
+  "name": "@akshayanimateddsa/lab-player",
+  "version": "0.1.0",
+  "description": "The step player for visual labs: records an algorithm's steps as snapshot frames and plays them in a lab box with controls, code and variables panels, keyboard shortcuts, fullscreen modes, nine colour themes and a motion setting. Plain DOM, no framework.",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akshay-Gupta-19/root-config.git",
+    "directory": "packages/lab-player"
+  },
+  "keywords": ["algorithm", "visualization", "animation", "step-player", "education"],
+  "sideEffects": ["*.css", "./dist/motion-choice.js"],
+  "files": ["dist", "css", "catalogue.json"],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./css/*": "./css/*",
+    "./catalogue.json": "./catalogue.json"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@akshayanimateddsa/visual-lab": "^0.2.0"
+  },
+  "scripts": {
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.json",
+    "test": "node --test \"test/*.test.js\"",
+    "check": "npm run build && npm test && npm pack --dry-run"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

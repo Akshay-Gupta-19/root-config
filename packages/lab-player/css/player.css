@@ -1,0 +1,844 @@
+/* @akshayanimateddsa/lab-player: the player box (.vz-*): header, stage, step note, operation pop-up,
+   legend, callout, code and variables, controls, shortcuts list, the fullscreen, recording-frame and
+   code modes, the phone layout and the syntax colours. Colours come from the tokens (visual-lab's
+   css/tokens.css, or the site's own) and the themes (css/themes.css). Moved from the DSA Visual Lab.
+   Site-specific: the watermark text is the site's `--vz-watermark-text` (a CSS string; none if unset),
+   and the site styles its own form controls inside .vz-fs-inputs / .vz-fs-question. */
+
+/* ==========================================================================
+   Visualizer shell: header, stage, explanation, code, variables, controls
+   ========================================================================== */
+
+.vz {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--vz-bg);
+  overflow: hidden;
+  box-shadow: var(--vz-shadow);
+}
+
+.vz:focus-visible { outline-offset: 4px; }
+
+/* While a frame is rendered instantly (reset, scrubbing far) nothing animates. */
+.vz.is-instant *,
+.vz.is-instant *::before,
+.vz.is-instant *::after {
+  transition-duration: 0s !important;
+  animation-duration: 0s !important;
+}
+
+/* ---------- Header ---------- */
+.vz-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 20px;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.vz-title { font-size: 1.15rem; margin: 0; }
+.vz-subtitle { margin: 2px 0 0; color: var(--text-muted); font-size: 0.9rem; }
+
+.vz-complexity { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.vz-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font: 600 0.8rem var(--font-mono);
+  color: var(--green);
+  padding: 4px 11px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--green) 40%, transparent);
+  background: color-mix(in srgb, var(--green) 8%, transparent);
+}
+
+.vz-chip small {
+  font-weight: 400;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ---------- Body layout ---------- */
+.vz-body { display: grid; grid-template-columns: minmax(0, 1fr); }
+
+@media (min-width: 1040px) {
+  .vz-body.has-side { grid-template-columns: minmax(0, 1fr) clamp(360px, 32%, 460px); }
+  .vz-body.has-side .vz-side { border-left: 1px solid var(--border); border-top: 0; }
+}
+
+.vz-main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: clamp(16px, 2.6vw, 26px);
+  min-width: 0;
+  background: var(--vz-stage-bg);
+  /* For the watermark below: positioned and isolated so it stays inside this area, and a
+     size container so the watermark's size follows this area's width (cqi). */
+  position: relative;
+  isolation: isolate;
+  container-type: inline-size;
+}
+
+/* Watermark: the site's name (`--vz-watermark-text`, set by the site), faint and diagonal, across
+   the animation. Shown on every lab page, in fullscreen and in recordings; its colour and strength come from the theme
+   (--vz-watermark-color / --vz-watermark-opacity in themes.css). It is drawn over the panels,
+   not under them, because the bright themes' panels are opaque and would hide it; it never
+   takes clicks or selection. */
+.vz-main::after {
+  content: var(--vz-watermark-text, none);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  font: 800 6.5cqi var(--font-mono);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: var(--vz-watermark-color);
+  opacity: var(--vz-watermark-opacity);
+  transform: translate(-50%, -50%) rotate(-18deg);
+  pointer-events: none;
+  user-select: none;
+}
+
+.vz-stage {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+.vz-panel {
+  min-width: 0;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--vz-panel-bg);
+}
+
+.vz-panel.is-wide { grid-column: 1 / -1; }
+
+.vz-panel-title,
+.vz-side-title {
+  font: 600 0.72rem var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+
+.vz-panel-title { font-size: 0.86rem; }
+
+/* ---------- Legend ---------- */
+.vz-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: -4px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.vz-legend li { display: inline-flex; align-items: center; gap: 7px; }
+
+.vz-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  border: 2px solid var(--tone, var(--border-strong));
+  background: color-mix(in srgb, var(--tone, transparent) 25%, var(--surface-2));
+}
+
+.vz-swatch.round { border-radius: 50%; }
+
+/* ---------- Operation pop-up (visualizer.js `vz-op`) ----------
+   The operation being run, above the drawing. The row keeps its height while the pill is empty
+   so nothing below it moves; the pill pops in each time the operation changes. */
+.vz-op {
+  display: flex;
+  justify-content: center;
+  min-height: 2.2rem;
+  margin-bottom: -6px;
+}
+.vz-op[hidden] { display: none; }
+.vz-op-text {
+  max-width: 100%;
+  padding: 5px 14px;
+  border: 1.5px solid var(--cyan);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--cyan) 14%, var(--surface));
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  overflow-wrap: anywhere;
+  box-shadow: 0 4px 18px -8px color-mix(in srgb, var(--cyan) 70%, transparent);
+}
+.vz-op-text.is-empty { visibility: hidden; }
+.vz-op-text.is-popping { animation: vz-op-pop 0.55s var(--ease); }
+@keyframes vz-op-pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.08); opacity: 1; box-shadow: 0 0 0 6px color-mix(in srgb, var(--cyan) 30%, transparent); }
+  100% { transform: scale(1); }
+}
+.vz.is-fullscreen .vz-op-text { font-size: 1.1rem; }
+
+/* ---------- Explanation ---------- */
+.vz-note {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  padding: 12px 16px;
+  min-height: 3.4em;
+  border-left: 3px solid var(--note, var(--cyan));
+  background: color-mix(in srgb, var(--note, var(--cyan)) 7%, transparent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.vz-note[data-tone="success"] { --note: var(--green); }
+.vz-note[data-tone="warn"] { --note: var(--amber); }
+.vz-note[data-tone="error"] { --note: var(--red); }
+
+.vz-note-step {
+  flex: none;
+  font: 600 0.72rem var(--font-mono);
+  color: var(--note, var(--cyan));
+  min-width: 3.6em;
+}
+
+.vz-note-text { margin: 0; font-size: 0.98rem; }
+
+.vz-note-text code,
+.vz-panel code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--cyan);
+}
+
+/* ---------- Side: code + variables ---------- */
+.vz-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px;
+  border-top: 1px solid var(--border);
+  background: var(--vz-bar-bg);
+  min-width: 0;
+}
+
+/* Code header: the title, and the text-size dropdown on the right */
+.vz-code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.vz-code-size {
+  font: 600 0.72rem var(--font-mono);
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
+  padding: 3px 6px;
+  cursor: pointer;
+}
+
+.vz-code-size:hover { color: var(--text); border-color: var(--cyan); }
+
+.vz-code-tools { display: inline-flex; align-items: center; gap: 6px; }
+
+/* Copy and code fullscreen buttons, beside the text-size dropdown */
+.vz-code-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 24px;
+  padding: 0;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.vz-code-btn svg { width: 14px; height: 14px; }
+.vz-code-btn:hover,
+.vz-code-btn[aria-pressed="true"] { color: var(--cyan); border-color: var(--cyan); }
+.vz-code-btn.is-done { color: var(--green); border-color: var(--green); }
+
+.vz-code-lines {
+  position: relative;
+  margin: 0;
+  padding: 8px 0;
+  list-style: none;
+  counter-reset: line;
+  max-height: 440px;
+  overflow: auto;
+  border-radius: var(--radius-sm);
+  background: var(--vz-code-bg);
+  border: 1px solid var(--border);
+  font: var(--vz-code-size, 0.77rem)/1.7 var(--font-mono);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.vz-code-lines li {
+  counter-increment: line;
+  padding: 0 12px 0 0;
+  white-space: pre;
+  color: var(--text-muted);
+  border-left: 3px solid transparent;
+  transition: background 0.25s, border-color 0.25s, color 0.25s;
+}
+
+.vz-code-lines li::before {
+  content: counter(line);
+  display: inline-block;
+  width: 2.6em;
+  padding-right: 0.9em;
+  text-align: right;
+  color: var(--text-dim);
+  opacity: 0.6;
+}
+
+.vz-code-lines li.is-current {
+  background: color-mix(in srgb, var(--amber) 12%, transparent);
+  border-left-color: var(--amber);
+  color: var(--text);
+}
+
+.vz-code-lines li.is-current::before { color: var(--amber); opacity: 1; }
+
+/* A Common Mistakes page marks the wrong line red and the corrected one green for the whole run;
+   the step's own highlight still shows on top. */
+.vz-code-lines li.is-bug { border-left-color: var(--red); background: color-mix(in srgb, var(--red) 10%, transparent); }
+.vz-code-lines li.is-fix { border-left-color: var(--green); background: color-mix(in srgb, var(--green) 10%, transparent); }
+.vz-code-lines li.is-bug.is-current { background: color-mix(in srgb, var(--red) 22%, transparent); }
+.vz-code-lines li.is-fix.is-current { background: color-mix(in srgb, var(--green) 22%, transparent); }
+.vz-code-lines li.is-bug::before { color: var(--red); opacity: 1; }
+.vz-code-lines li.is-fix::before { color: var(--green); opacity: 1; }
+
+.vz-vars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+}
+
+.vz-var {
+  display: inline-flex;
+  gap: 6px;
+  font: 0.8rem var(--font-mono);
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  max-width: 100%;
+}
+
+.vz-var dt::after { content: " ="; }
+.vz-var dd { margin: 0; color: var(--text); font-weight: 600; overflow-wrap: anywhere; }
+
+.vz-var.is-changed {
+  border-color: color-mix(in srgb, var(--amber) 60%, transparent);
+  animation: vz-pulse-var 0.7s var(--ease);
+}
+
+.vz-var.is-changed dd { color: var(--amber); }
+
+@keyframes vz-pulse-var {
+  30% { transform: scale(1.07); }
+}
+
+/* ---------- Controls ---------- */
+.vz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--border);
+  background: var(--vz-bar-bg);
+}
+
+.vz-controls-buttons { display: flex; gap: 6px; }
+
+.vz-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s var(--ease);
+}
+
+.vz-btn:hover:not(:disabled) { border-color: var(--cyan); }
+.vz-btn:active:not(:disabled) { transform: scale(0.94); }
+.vz-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.vz-btn svg { width: 18px; height: 18px; }
+
+.vz-btn--play {
+  width: 48px;
+  background: var(--gradient);
+  color: var(--on-accent);
+  border: 0;
+}
+
+.vz-scrub {
+  flex: 1 1 160px;
+  min-width: 120px;
+  height: 22px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.vz-scrub::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, var(--cyan), var(--green)) 0 0 / var(--progress, 0%) 100% no-repeat, var(--surface-2);
+}
+
+.vz-scrub::-moz-range-track {
+  height: 5px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, var(--cyan), var(--green)) 0 0 / var(--progress, 0%) 100% no-repeat, var(--surface-2);
+}
+
+.vz-scrub::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -5.5px;
+  border-radius: 50%;
+  background: var(--text);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--cyan) 25%, transparent);
+}
+
+.vz-scrub::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--text);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--cyan) 25%, transparent);
+}
+
+.vz-counter {
+  font: 0.78rem var(--font-mono);
+  color: var(--text-dim);
+  min-width: 7.5em;
+  text-align: right;
+}
+
+.vz-speed-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 0.75rem var(--font-mono);
+  color: var(--text-dim);
+}
+
+.vz-speed {
+  font: 600 0.82rem var(--font-mono);
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+/* View toggles (code, fullscreen) at the end of the bar */
+.vz-tools {
+  display: flex;
+  gap: 6px;
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+}
+
+.vz-tool[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--cyan) 55%, transparent);
+  background: color-mix(in srgb, var(--cyan) 10%, transparent);
+  color: var(--cyan);
+}
+
+/* ---------- Keyboard shortcuts overlay ("?", ui/shortcuts.js) ---------- */
+.vz-keys {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  max-width: min(640px, calc(100vw - 32px));
+  width: 100%;
+  max-height: calc(100dvh - 32px);
+}
+.vz-keys::backdrop { background: rgb(0 0 0 / 0.6); }
+.vz-keys-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 18px 22px 22px;
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.45);
+}
+.vz-keys-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.vz-keys-title { margin: 0; font: 700 1.1rem var(--font-display); }
+.vz-keys-close {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.vz-keys-close:hover { border-color: var(--cyan); }
+.vz-keys-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 6px 28px;
+}
+.vz-keys-group h3 {
+  margin: 10px 0 6px;
+  font: 600 0.72rem var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.vz-keys-group dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 7px 14px;
+  margin: 0;
+  align-items: center;
+}
+.vz-keys-group dt { display: flex; gap: 4px; justify-content: flex-end; }
+.vz-keys-group dd { margin: 0; font-size: 0.88rem; }
+.vz-keys kbd {
+  min-width: 28px;
+  padding: 3px 8px;
+  border: 1px solid var(--border-strong);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--surface);
+  font: 600 0.78rem var(--font-mono);
+  text-align: center;
+}
+/* No keyboard on a touch screen: no button for a list of keys. */
+@media (hover: none) and (pointer: coarse) {
+  .vz-keys-btn { display: none; }
+}
+
+/* ---------- Fullscreen: only the animation and the controls ---------- */
+.vz.is-fullscreen {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--vz-bg);
+}
+
+.vz.is-pseudo-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  height: 100dvh;
+}
+
+html.vz-lock-scroll { overflow: hidden; }
+
+.vz-fs-bar { display: none; }
+
+.vz.is-fullscreen .vz-header,
+.vz.is-fullscreen .vz-legend,
+.vz.is-fullscreen .vz-note,
+.vz.is-fullscreen .vz-panel:has(> .co.is-placeholder) {
+  display: none !important;
+}
+
+.vz.is-fullscreen .vz-fs-bar:not([hidden]) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  padding: 12px clamp(16px, 3vw, 40px);
+  border-bottom: 1px solid var(--border);
+  background: var(--vz-bar-bg);
+}
+
+/* The page's input form, moved in while fullscreen lasts: a compact bar under the topic. */
+.vz-fs-inputs[hidden] { display: none; }
+
+.vz.is-fullscreen .vz-fs-inputs {
+  padding: 10px clamp(16px, 3vw, 40px);
+  border-bottom: 1px solid var(--border);
+  background: var(--vz-bar-bg);
+  max-height: 40dvh;
+  overflow: auto;
+}
+
+
+/* The question, moved out of the form while fullscreen lasts: its own bar (Q), under the topic. */
+.vz-fs-question[hidden] { display: none; }
+
+.vz.is-fullscreen .vz-fs-question {
+  padding: 10px clamp(16px, 3vw, 40px);
+  border-bottom: 1px solid var(--border);
+  background: var(--vz-bar-bg);
+  max-height: 30dvh;
+  overflow: auto;
+}
+
+
+.vz-fs-topic { font: 700 1.15rem var(--font-display); color: var(--text); }
+.vz-fs-title { font: 0.85rem var(--font-mono); color: var(--text-muted); }
+
+.vz.is-fullscreen .vz-body {
+  --side-w: clamp(280px, 32%, 460px);
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  container-type: size;
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+/* Code + variables: a column on the right (below on narrow screens), toggled
+   with the code button. It stays in view while the stage scrolls; the stage
+   takes the rest of the room and fitToScreen rescales it. */
+.vz.is-fullscreen .vz-body.has-side { grid-template-columns: minmax(0, 1fr) var(--side-w) !important; }
+
+.vz.is-fullscreen .vz-side {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100cqh;
+  overflow: auto;
+  border-top: 0;
+  border-left: 1px solid var(--border);
+}
+
+.vz.is-fullscreen .vz-code { display: flex; flex-direction: column; min-height: 0; flex: 1 1 auto; }
+.vz.is-fullscreen .vz-code-lines { max-height: none; flex: 1 1 auto; min-height: 96px; }
+
+@media (max-width: 720px) {
+  .vz.is-fullscreen .vz-body.has-side { grid-template-columns: minmax(0, 1fr) !important; }
+  .vz.is-fullscreen .vz-body.has-side .vz-main { min-height: 60cqh; }
+  .vz.is-fullscreen .vz-side {
+    top: auto;
+    bottom: 0;
+    height: 40cqh;
+    padding: 12px;
+    gap: 10px;
+    border-left: 0;
+    border-top: 1px solid var(--border);
+  }
+}
+
+.vz.is-fullscreen .vz-main {
+  min-height: 100%;
+  justify-content: center;
+  padding: clamp(16px, 3vw, 40px) max(clamp(16px, 3vw, 40px), (100% - 1400px) / 2);
+}
+
+.vz.is-fullscreen .vz-stage { gap: 18px; }
+.vz.is-fullscreen .nl { max-height: 48vh !important; }
+.vz.is-fullscreen .vz-stage:has(> .vz-panel:only-child) .nl { max-height: 78vh !important; }
+/* A tall diagram (e.g. a hash table's column of buckets) gets most of the height. */
+.vz.is-fullscreen .vz-panel--tall .nl { max-height: 60vh !important; }
+
+/* ---------- Code fullscreen: only the code (and variables), centred and larger ----------
+   The current line already scrolls to the middle of the code (see code-panel.js). */
+.vz.is-code-view .vz-main { display: none; }
+.vz.is-code-view .vz-body.has-side { grid-template-columns: minmax(0, 1fr) !important; }
+
+.vz.is-code-view .vz-side {
+  justify-self: center;
+  width: min(100%, 1100px);
+  top: 0;
+  bottom: auto;
+  height: 100cqh;
+  padding: clamp(16px, 3vw, 40px);
+  border: 0;
+}
+
+/* Larger where there's room; a phone keeps the chosen size so lines aren't cut off. */
+@media (min-width: 721px) {
+  .vz.is-code-view .vz-code-lines { font-size: calc(var(--vz-code-size, 0.77rem) * 1.4); }
+}
+
+/* ---------- Recording frame: a 1080×1920 reel ----------
+   The frame becomes a centred 9:16 strip (1080×1920 scaled to the screen), the exact shape
+   of a reel. Everything outside it is plain black so a screen recording can be cropped to the
+   frame exactly. */
+.vz-frame { display: contents; }
+
+.vz.is-recording {
+  --frame-w: min(100vw, 100dvh * 9 / 16);
+  --frame-h: min(100dvh, 100vw * 16 / 9);
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.vz.is-recording .vz-frame {
+  display: flex;
+  flex-direction: column;
+  width: var(--frame-w);
+  height: var(--frame-h);
+  overflow: hidden;
+  background: var(--vz-bg);
+}
+
+.vz.is-recording .vz-fs-bar { padding: 10px 18px; }
+.vz.is-recording .vz-fs-topic { font-size: 1.05rem; }
+.vz.is-recording .vz-body { --side-w: clamp(240px, 36%, 420px); }
+.vz.is-recording .vz-side { padding: 12px; gap: 10px; }
+
+.vz.is-recording .vz-main {
+  padding: 16px 18px;
+  gap: 10px;
+}
+
+.vz.is-recording .vz-body { scrollbar-width: none; }
+.vz.is-recording .vz-body::-webkit-scrollbar { display: none; }
+
+/* Two columns: wide panels (graph, array) span the frame, small ones pair up. */
+.vz.is-recording .vz-stage {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.vz.is-recording .vz-panel:last-child:nth-child(even):not(.is-wide) { grid-column: 1 / -1; }
+.vz.is-recording .vz-panel { padding: 8px 12px; }
+.vz.is-recording .vz-panel-title { margin-bottom: 6px; }
+.vz.is-recording .nl { max-height: 46vh !important; }
+.vz.is-recording .vz-stage:has(> .vz-panel:only-child) .nl { max-height: 72vh !important; }
+.vz.is-recording .vz-panel--tall .nl { max-height: 56vh !important; }
+
+.vz.is-recording .vz-controls { gap: 10px; padding: 10px 16px; }
+.vz.is-recording .vz-tools { padding-left: 10px; }
+
+.vz { position: relative; }
+.vz.is-pseudo-fullscreen { position: fixed; }
+
+.vz.is-recording .vz-frame { position: relative; }
+
+/* The 9:16 frame is narrow: the code and variables go below the stage (as on a phone),
+   and the controls bar is denser so it takes one or two rows, not three. */
+.vz.is-recording .vz-body.has-side { grid-template-columns: minmax(0, 1fr) !important; }
+.vz.is-recording .vz-body.has-side .vz-main { min-height: 55cqh; }
+.vz.is-recording .vz-side {
+  top: auto;
+  bottom: 0;
+  height: 45cqh;
+  padding: 10px 12px;
+  gap: 8px;
+  border-left: 0;
+  border-top: 1px solid var(--border);
+}
+.vz.is-recording .vz-side > * { flex-shrink: 0; }
+.vz.is-recording .vz-controls { gap: 6px 8px; padding: 8px 10px; }
+.vz.is-recording .vz-btn { width: 32px; height: 32px; border-radius: 8px; }
+.vz.is-recording .vz-btn--play { width: 40px; }
+.vz.is-recording .vz-btn svg { width: 15px; height: 15px; }
+.vz.is-recording .vz-tools { padding-left: 0; border-left: 0; gap: 4px; }
+.vz.is-recording .vz-speed-wrap > span,
+.vz.is-recording .vz-counter { display: none; }
+
+/* Code in the recording frame (B): the code panel fills the frame. */
+.vz.is-recording.is-code-view .vz-side {
+  top: 0;
+  bottom: auto;
+  height: 100cqh;
+  border: 0;
+  padding: 14px 16px;
+}
+
+/* ---------- Compact (showcase widgets) ---------- */
+.vz--compact .vz-header { padding: 12px 16px; }
+.vz--compact .vz-title { font-size: 1rem; }
+.vz--compact .vz-main { padding: 14px; gap: 12px; }
+.vz--compact .vz-panel { padding: 10px 12px; }
+.vz--compact .vz-side { padding: 14px; }
+.vz--compact .vz-code-lines { max-height: 260px; }
+
+@media (max-width: 640px) {
+  .vz-header { padding: 14px 16px; }
+  .vz-controls { padding: 10px 12px; }
+  .vz-counter { min-width: 0; text-align: left; }
+  .vz-tools { padding-left: 0; border-left: 0; margin-left: auto; }
+  .vz-btn { width: 38px; height: 38px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vz * { transition-duration: 0s !important; animation-duration: 0s !important; }
+}
+
+
+/* ---------- Syntax colours (code panel, java.ts `tok-*`); each theme sets the --syn-* tokens ---------- */
+.tok-kw { color: var(--syn-kw, #c792ea); }
+.tok-type { color: var(--syn-type, #82aaff); }
+.tok-num { color: var(--syn-num, #f78c6c); }
+.tok-str { color: var(--syn-str, #c3e88d); }
+.tok-fn { color: var(--syn-fn, #7fdbca); }
+.tok-com { color: var(--syn-com, #637199); font-style: italic; }
+
+/* ---------- Callout (CalloutView) ---------- */
+.co {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--tone, var(--cyan)) 50%, transparent);
+  background: color-mix(in srgb, var(--tone, var(--cyan)) 9%, transparent);
+}
+
+.co-title {
+  display: block;
+  font: 600 0.9rem var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tone, var(--cyan));
+  margin-bottom: 4px;
+}
+
+.co.is-placeholder { border-style: dashed; border-color: var(--border-strong); background: transparent; }
+.co.is-placeholder .co-text { color: var(--text-dim); font-family: var(--font-body); font-size: 1.06rem; }
+
+.co-text { margin: 0; font-family: var(--font-mono); font-size: 1.19rem; overflow-wrap: anywhere; }
+
+/* A one-shot flash for a block whose content changed (the callout; a site's own boxes may use it). */
+.co.is-flash { animation: vz-flash 0.8s var(--ease); }
+
+@keyframes vz-flash {
+  30% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--tone) 30%, transparent); }
+}

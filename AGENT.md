@@ -9,6 +9,7 @@ rules.
 ```
 AGENT.md                            ← you are here: repo-wide technical rules, and the root-config package's
 ├── packages/visual-lab/AGENT.md    @akshayanimateddsa/visual-lab: generic algorithm-animation views
+├── packages/lab-player/AGENT.md    @akshayanimateddsa/lab-player: the labs' step player (frames, controls, code, themes)
 ├── packages/docs-check/AGENT.md    @akshayanimateddsa/docs-check: checks a repo's agent docs stay true to it
 ├── scripts/validate.mjs            config sanity check (`npm run build`)
 ├── .github/workflows/ci.yml        lint + build + test + pack check on every push to main and every PR
@@ -22,7 +23,9 @@ in the same change.
   `@akshayanimateddsa` scope. Not deployed and not an application.
 - **Packages** (npm workspaces): `@akshayanimateddsa/root-config` at the repo root (generic TypeScript,
   ESLint, Prettier and EditorConfig settings) and `packages/*`: today `@akshayanimateddsa/visual-lab`
-  (the websites' visual-lab views: array, graph, tree, recursion tree) and
+  (the websites' visual-lab views: array, graph, tree, recursion tree),
+  `@akshayanimateddsa/lab-player` (the labs' step player: frames, controls, code and variables
+  panels, shortcuts, fullscreen modes, nine themes, motion; built on visual-lab) and
   `@akshayanimateddsa/docs-check` (a command that checks a repo's agent docs: rule-file pairs, rule
   tree, paths, ADRs, roadmap lists, README status). Only generic pieces live here:
   a demo's steps, explanations and page stay in the website that sells or shows it. Reels and other media never depend on
@@ -43,7 +46,9 @@ in the same change.
 - This repo depends on **nothing** in the workspace. It sits at the bottom of the graph.
 - Shared libraries and leaf projects may consume these packages; this repo must never import from
   them, and must never reference `workspace-meta` (private). Packages here depend on each other only
-  by their published names, and have no runtime dependencies outside this repo.
+  by their published names, and have no runtime dependencies outside this repo. A package that
+  depends on another builds after it: the root `build` script lists the order (visual-lab before
+  lab-player).
 - No circular dependencies.
 
 ## Security & secret hygiene (PUBLIC REPO)
