@@ -1,0 +1,392 @@
+/* ==========================================================================
+   @akshayanimateddsa/lab-player: the visualizer colour themes (moved from the DSA Visual Lab)
+   A theme only recolours the visualizer box (.vz), never the rest of the page.
+   `.vz` below holds the visualizer's own colour tokens with the default
+   (Midnight) values; a `.vz[data-theme="<id>"]` block overrides any of them,
+   along with the shared tokens (--bg, --surface, --text, the palette --cyan …
+   --red, --indigo, --orange; the syntax colours --syn-*). `.vz` sets Midnight's
+   whole palette itself, so the box looks the same on any page (a light page
+   included), and every block sets the whole palette, so every tone has a
+   colour in every theme. To
+   add a theme: add a block here and an entry in src/themes.ts (a test checks
+   both). A site's own views add their per-theme rules in the site's CSS.
+   ========================================================================== */
+
+.vz {
+  color-scheme: dark;
+
+  /* Midnight's palette (the same values as visual-lab's css/tokens.css defaults). */
+  --bg: #060a18;
+  --bg-elevated: #0b1228;
+  --surface: #0f1833;
+  --surface-2: #142045;
+  --border: rgba(125, 165, 255, 0.14);
+  --border-strong: rgba(125, 165, 255, 0.28);
+  --text: #e8edfb;
+  --text-muted: #9aa6c7;
+  --text-dim: #6a769a;
+  --cyan: #22d3ee;
+  --green: #34d399;
+  --amber: #fbbf24;
+  --pink: #f472b6;
+  --violet: #a78bfa;
+  --red: #f87171;
+  --indigo: #818cf8;
+  --orange: #fb923c;
+  --on-accent: #04121a;
+
+  color: var(--text);
+
+  --vz-bg: var(--bg-elevated);                 /* the box, and the fullscreen / recording frame */
+  --vz-bar-bg: var(--bg);                      /* controls, code column, fullscreen bars */
+  --vz-stage-bg: radial-gradient(circle at 1px 1px, rgba(125, 165, 255, 0.07) 1px, transparent 0) 0 0 / 22px 22px;
+  --vz-panel-bg: rgba(11, 18, 40, 0.72);
+  --vz-code-bg: rgba(15, 24, 51, 0.6);
+  --vz-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(34, 211, 238, 0.04);
+  --vz-drop: #000;                             /* colour of drop shadows under lifted items */
+
+  --vz-node: var(--surface-2);                 /* nodes and array cells */
+  --vz-node-stroke: var(--border-strong);
+  --vz-node-text: var(--text);
+  --vz-edge: rgba(125, 165, 255, 0.34);        /* graph edges and list links */
+  --vz-watermark-color: var(--text);           /* site name behind the animation (player.css) */
+  --vz-watermark-opacity: 0.03;
+
+  /* Re-declared here so it picks up the theme's accents. */
+  --gradient: linear-gradient(120deg, var(--cyan), var(--green));
+}
+
+/* ---------- Dark ---------- */
+
+.vz[data-theme="graphite"] {
+  --bg: #0d0f12;
+  --bg-elevated: #15181d;
+  --surface: #1b1f26;
+  --surface-2: #232831;
+  --border: rgba(200, 210, 225, 0.12);
+  --border-strong: rgba(200, 210, 225, 0.24);
+  --text: #eceff4;
+  --text-muted: #a3abb8;
+  --text-dim: #737b88;
+  --cyan: #5ac8fa;
+  --green: #4ade80;
+  --amber: #fbbf24;
+  --pink: #f472b6;
+  --violet: #a78bfa;
+  --red: #f87171;
+  --indigo: #818cf8;
+  --orange: #fb923c;
+  --vz-stage-bg: radial-gradient(circle at 1px 1px, rgba(200, 210, 225, 0.06) 1px, transparent 0) 0 0 / 22px 22px;
+  --vz-panel-bg: rgba(28, 32, 40, 0.75);
+  --vz-code-bg: rgba(20, 23, 28, 0.7);
+  --vz-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(200, 210, 225, 0.06);
+  --vz-edge: rgba(200, 210, 225, 0.32);
+}
+
+.vz[data-theme="ocean"] {
+  --bg: #021a22;
+  --bg-elevated: #04252f;
+  --surface: #073241;
+  --surface-2: #0a3d4f;
+  --border: rgba(94, 234, 212, 0.14);
+  --border-strong: rgba(94, 234, 212, 0.28);
+  --text: #e6fbff;
+  --text-muted: #8fc3cc;
+  --text-dim: #5d8e98;
+  --cyan: #2dd4bf;
+  --green: #a3e635;
+  --amber: #fcd34d;
+  --pink: #fb7185;
+  --violet: #c4b5fd;
+  --red: #f87171;
+  --indigo: #a5b4fc;
+  --orange: #fdba74;
+  --vz-stage-bg: radial-gradient(circle at 1px 1px, rgba(94, 234, 212, 0.07) 1px, transparent 0) 0 0 / 22px 22px;
+  --vz-panel-bg: rgba(4, 40, 52, 0.75);
+  --vz-code-bg: rgba(3, 30, 40, 0.7);
+  --vz-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(94, 234, 212, 0.06);
+  --vz-edge: rgba(94, 234, 212, 0.32);
+}
+
+/* ---------- Neon ---------- */
+
+.vz[data-theme="cyberpunk"] {
+  --bg: #05010a;
+  --bg-elevated: #0a0414;
+  --surface: #120a22;
+  --surface-2: #1a0f30;
+  --border: rgba(255, 43, 214, 0.2);
+  --border-strong: rgba(0, 240, 255, 0.36);
+  --text: #f5f3ff;
+  --text-muted: #b9a6e6;
+  --text-dim: #7d6ca8;
+  --cyan: #00f0ff;
+  --green: #39ff14;
+  --amber: #ffe600;
+  --pink: #ff2bd6;
+  --violet: #b26bff;
+  --red: #ff3860;
+  --indigo: #7b61ff;
+  --orange: #ff8c00;
+  --on-accent: #05010a;
+  --syn-kw: #ff2bd6;
+  --syn-type: #00f0ff;
+  --syn-num: #ffe600;
+  --syn-str: #39ff14;
+  --syn-fn: #b26bff;
+  --syn-com: #7d6ca8;
+  --vz-stage-bg:
+    linear-gradient(rgba(0, 240, 255, 0.06) 1px, transparent 1px) 0 0 / 28px 28px,
+    linear-gradient(90deg, rgba(255, 43, 214, 0.06) 1px, transparent 1px) 0 0 / 28px 28px;
+  --vz-panel-bg: rgba(18, 10, 34, 0.78);
+  --vz-code-bg: rgba(10, 4, 20, 0.8);
+  --vz-shadow: 0 0 0 1px rgba(0, 240, 255, 0.3), 0 0 40px rgba(255, 43, 214, 0.25);
+  --vz-node-stroke: rgba(0, 240, 255, 0.55);
+  --vz-edge: rgba(0, 240, 255, 0.5);
+}
+
+.vz[data-theme="synthwave"] {
+  --bg: #12001e;
+  --bg-elevated: #1d0631;
+  --surface: #2a0b45;
+  --surface-2: #351157;
+  --border: rgba(255, 126, 219, 0.18);
+  --border-strong: rgba(255, 126, 219, 0.34);
+  --text: #fff1fb;
+  --text-muted: #d7a9d9;
+  --text-dim: #9d73a8;
+  --cyan: #36f9f6;
+  --green: #72f1b8;
+  --amber: #fede5d;
+  --pink: #ff7edb;
+  --violet: #c792ea;
+  --red: #fe4450;
+  --indigo: #8b9cff;
+  --orange: #ff9e64;
+  --on-accent: #1d0631;
+  --syn-kw: #fede5d;
+  --syn-type: #ff7edb;
+  --syn-num: #f97e72;
+  --syn-str: #72f1b8;
+  --syn-fn: #36f9f6;
+  --syn-com: #848bbd;
+  --gradient: linear-gradient(120deg, #ff7edb, #fede5d);
+  --vz-bg: linear-gradient(180deg, #1d0631 0%, #2b0b3f 60%, #3d0a3a 100%);
+  --vz-bar-bg: #12001e;
+  --vz-stage-bg: radial-gradient(circle at 1px 1px, rgba(255, 126, 219, 0.08) 1px, transparent 0) 0 0 / 22px 22px;
+  --vz-panel-bg: rgba(42, 11, 69, 0.6);
+  --vz-code-bg: rgba(20, 0, 33, 0.7);
+  --vz-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 126, 219, 0.15);
+  --vz-edge: rgba(255, 126, 219, 0.45);
+}
+
+/* Purple-to-blue space background: magenta nodes, yellow edges, a cyan visited set, a lime queue. */
+.vz[data-theme="galaxy"] {
+  --bg: #1e0838;
+  --bg-elevated: #2a0c48;
+  --surface: #3a1660;
+  --surface-2: #4a1a72;
+  --border: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.3);
+  --text: #ffffff;
+  --text-muted: #e0c8f0;
+  --text-dim: #b49ad0;
+  --cyan: #00b4f0;
+  --green: #94d351;
+  --amber: #ffc107;
+  --pink: #ff5fa2;
+  --violet: #d18cff;
+  --red: #ff4d6d;
+  --indigo: #8c9eff;
+  --orange: #ff9f43;
+  --on-accent: #2a0a3a;
+  --syn-kw: #ffd84d;
+  --syn-type: #7fd1ff;
+  --syn-num: #ffab70;
+  --syn-str: #b9f27c;
+  --syn-fn: #ff9de2;
+  --syn-com: #b49ad0;
+  --gradient: linear-gradient(120deg, #00b4f0, #94d351);
+  --vz-bg:
+    radial-gradient(900px 500px at 8% 0%, rgba(120, 20, 120, 0.55), transparent 65%),
+    linear-gradient(135deg, #470a4e 0%, #2e1566 50%, #1b2a8c 100%);
+  --vz-bar-bg: rgba(26, 8, 52, 0.82);
+  --vz-stage-bg: repeating-radial-gradient(circle at 94% 12%, transparent 0 46px, rgba(255, 255, 255, 0.045) 46px 48px);
+  --vz-panel-bg: rgba(255, 255, 255, 0.05);
+  --vz-code-bg: rgba(20, 6, 40, 0.55);
+  --vz-shadow: 0 30px 80px rgba(10, 0, 30, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --vz-node: #a83fc0;
+  --vz-node-stroke: #c766dc;
+  --vz-node-text: #ffffff;
+  --vz-edge: #ffef3a;
+}
+
+/* Spotlight: the look of short-form explainer reels.
+   Near-black with soft coloured light, panels as lit cards, everything that has a
+   state glows in its colour, bold labels, a headline-style title, a caption-style
+   note, and moves that settle with a little bounce. */
+.vz[data-theme="spotlight"] {
+  --bg: #05070f;
+  --bg-elevated: #0a0d19;
+  --surface: #131a2c;
+  --surface-2: #182036;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --text: #f8fafc;
+  --text-muted: #a9b4c8;
+  --text-dim: #6f7a90;
+  --cyan: #22d3ee;
+  --green: #34d399;
+  --amber: #fbbf24;
+  --pink: #f472b6;
+  --violet: #a78bfa;
+  --red: #f87171;
+  --indigo: #818cf8;
+  --orange: #fb923c;
+  --ease: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --vz-bg:
+    radial-gradient(700px 420px at 6% 0%, rgba(76, 52, 150, 0.32), transparent 70%),
+    radial-gradient(600px 420px at 100% 100%, rgba(14, 90, 112, 0.28), transparent 70%),
+    radial-gradient(420px 300px at 92% 6%, rgba(110, 82, 20, 0.18), transparent 70%),
+    #05070f;
+  --vz-bar-bg: rgba(8, 10, 20, 0.86);
+  --vz-stage-bg: transparent;
+  --vz-panel-bg:
+    linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.65), transparent) 50% 0 / 76% 1px no-repeat,
+    linear-gradient(180deg, rgba(26, 32, 54, 0.9), rgba(15, 19, 34, 0.9));
+  --vz-code-bg: rgba(8, 11, 22, 0.8);
+  --vz-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 90px rgba(120, 110, 255, 0.1), 0 0 0 1px rgba(167, 139, 250, 0.08);
+  --vz-node: #131a2c;
+  --vz-node-stroke: rgba(255, 255, 255, 0.24);
+  --vz-node-text: #ffffff;
+  --vz-edge: rgba(255, 255, 255, 0.2);
+}
+
+.vz[data-theme="spotlight"] .vz-panel {
+  border-radius: 22px;
+  box-shadow: 0 0 60px rgba(120, 110, 255, 0.08), 0 18px 50px rgba(0, 0, 0, 0.45);
+}
+
+.vz[data-theme="spotlight"] .vz-title {
+  display: inline-block;
+  padding: 4px 14px 4px 12px;
+  border-left: 5px solid var(--violet);
+  border-radius: 6px;
+  background: rgba(18, 22, 38, 0.85);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.vz[data-theme="spotlight"] .vz-chip {
+  border-width: 2px;
+  border-color: var(--green);
+  background: rgba(10, 12, 22, 0.85);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--green) 30%, transparent);
+  font-weight: 800;
+}
+
+/* The explanation as a caption: bold, on a dark plate, its code words lit. */
+.vz[data-theme="spotlight"] .vz-note {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(8, 10, 20, 0.62);
+}
+.vz[data-theme="spotlight"] .vz-note-step {
+  align-self: center;
+  padding: 2px 10px;
+  border: 2px solid var(--note, var(--cyan));
+  border-radius: 999px;
+  text-align: center;
+  font-weight: 800;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--note, var(--cyan)) 35%, transparent);
+}
+.vz[data-theme="spotlight"] .vz-note-text { font-weight: 650; font-size: 1.04rem; }
+.vz[data-theme="spotlight"] .vz-note-text code { background: transparent; padding: 0; font-weight: 700; }
+
+/* Bold labels, and a glow on everything that has a state. */
+.vz[data-theme="spotlight"] .nl-label { font-weight: 800; }
+.vz[data-theme="spotlight"] .nl-node[class*="tone-"]:not(.tone-muted) .nl-shape {
+  filter: drop-shadow(0 0 9px color-mix(in srgb, var(--tone) 75%, transparent));
+}
+.vz[data-theme="spotlight"] .nl-edge[class*="tone-"]:not(.tone-muted) .nl-line {
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--tone) 80%, transparent));
+}
+.vz[data-theme="spotlight"] .av-slot[class*="tone-"]:not(.tone-muted) {
+  box-shadow: 0 0 18px color-mix(in srgb, var(--tone) 45%, transparent), inset 0 0 10px color-mix(in srgb, var(--tone) 16%, transparent);
+}
+.vz[data-theme="spotlight"] .av-item { font-weight: 800; }
+
+/* ---------- Bright ---------- */
+
+.vz[data-theme="paper"] {
+  color-scheme: light;
+  --bg: #f4f6fb;
+  --bg-elevated: #ffffff;
+  --surface: #eef2f8;
+  --surface-2: #e3e9f4;
+  --border: rgba(30, 50, 90, 0.12);
+  --border-strong: rgba(30, 50, 90, 0.26);
+  --text: #172033;
+  --text-muted: #4a5875;
+  --text-dim: #7a869e;
+  --cyan: #0284c7;
+  --green: #059669;
+  --amber: #d97706;
+  --pink: #db2777;
+  --violet: #7c3aed;
+  --red: #dc2626;
+  --indigo: #4f46e5;
+  --orange: #ea580c;
+  --on-accent: #ffffff;
+  --syn-kw: #8b2fc9;
+  --syn-type: #1d5fd1;
+  --syn-num: #c2410c;
+  --syn-str: #15803d;
+  --syn-fn: #0e7490;
+  --syn-com: #7a869e;
+  --vz-stage-bg: radial-gradient(circle at 1px 1px, rgba(30, 50, 90, 0.09) 1px, transparent 0) 0 0 / 22px 22px;
+  --vz-panel-bg: #ffffff;
+  --vz-code-bg: #f6f8fc;
+  --vz-shadow: 0 20px 50px rgba(30, 50, 90, 0.12), 0 0 0 1px rgba(30, 50, 90, 0.06);
+  --vz-drop: rgba(30, 50, 90, 0.6);
+  --vz-node: #f1f5fb;
+  --vz-node-stroke: rgba(30, 50, 90, 0.3);
+  --vz-edge: rgba(30, 50, 90, 0.38);
+}
+
+.vz[data-theme="pastel"] {
+  color-scheme: light;
+  --bg: #fbf7f2;
+  --bg-elevated: #fffdf9;
+  --surface: #f6efe6;
+  --surface-2: #f1e8f7;
+  --border: rgba(110, 80, 140, 0.14);
+  --border-strong: rgba(110, 80, 140, 0.28);
+  --text: #2e2440;
+  --text-muted: #5f5373;
+  --text-dim: #8f84a0;
+  --cyan: #2f8fc8;
+  --green: #2f9e6c;
+  --amber: #d08a10;
+  --pink: #d9558f;
+  --violet: #8b6cd9;
+  --red: #d94848;
+  --indigo: #6366c8;
+  --orange: #d9752a;
+  --on-accent: #ffffff;
+  --syn-kw: #a1459a;
+  --syn-type: #3a6fc4;
+  --syn-num: #c8641c;
+  --syn-str: #3d8b4f;
+  --syn-fn: #2d8a8a;
+  --syn-com: #8f84a0;
+  --gradient: linear-gradient(120deg, #8b6cd9, #d9558f);
+  --vz-stage-bg: radial-gradient(circle at 1px 1px, rgba(110, 80, 140, 0.1) 1px, transparent 0) 0 0 / 22px 22px;
+  --vz-panel-bg: rgba(255, 255, 255, 0.82);
+  --vz-code-bg: #faf5ee;
+  --vz-shadow: 0 20px 50px rgba(110, 80, 140, 0.14), 0 0 0 1px rgba(110, 80, 140, 0.06);
+  --vz-drop: rgba(110, 80, 140, 0.5);
+  --vz-node: #f6f0fb;
+  --vz-node-stroke: rgba(110, 80, 140, 0.32);
+  --vz-edge: rgba(110, 80, 140, 0.38);
+}

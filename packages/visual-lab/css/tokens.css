@@ -20,6 +20,8 @@
   --pink: #f472b6;
   --violet: #a78bfa;
   --red: #f87171;
+  --indigo: #818cf8;
+  --orange: #fb923c;
 
   --gradient: linear-gradient(120deg, var(--cyan), var(--green));
   --on-accent: #04121a; /* text on the gradient and on solid accent badges */
@@ -63,6 +65,11 @@
 .tone-error,
 .tone-removed { --tone: var(--red); }
 .tone-muted { --tone: var(--text-dim); }
+.tone-unreviewed,
+.tone-waiting { --tone: var(--violet); }
+.tone-existing { --tone: var(--indigo); }
+.tone-pressure,
+.tone-warning { --tone: var(--orange); }
 
 /* Layout changes that should not animate (e.g. re-layout after a resize). */
 .no-anim,

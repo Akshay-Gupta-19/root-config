@@ -1,0 +1,32 @@
+{
+  "$comment": "Every export of @akshayanimateddsa/lab-player, one line each (test/catalogue.test.js checks this list against the code). The views a lab draws come from @akshayanimateddsa/visual-lab; this package plays them.",
+  "player": {
+    "createVisualizer": "Mounts the whole player in an element: header, panels of views, operation pop-up, legend, step note, code and variables, controls, shortcuts, fullscreen modes.",
+    "createTrace": "Records an algorithm run as snapshot frames: each step deep-copies its state; panel state carries over and is replaced, never merged.",
+    "createPlayer": "Playback over a fixed frame list (play, pause, step, seek, speed); emits frame and state events; big jumps are instant.",
+    "SPEEDS": "The playback speeds offered: 0.5× to 3×."
+  },
+  "parts": {
+    "createControls": "The playback bar: reset, previous, play, next, end, scrubber, step counter, speed, and tool buttons at the end.",
+    "createCodePanel": "Java source with the step's line(s) highlighted, red / green marked lines, a copy button and a text-size dropdown.",
+    "createVarsPanel": "The variables in scope, marking the ones changed since the previous frame.",
+    "highlightJava": "One line of Java as HTML with tok-* spans (comments, strings, numbers, keywords, types, calls).",
+    "createLegend": "A ul.vz-legend: one tone swatch and label per item.",
+    "CalloutView": "A view: a highlighted message block in the stage (title, text, tone) that flashes when it changes; optional placeholder."
+  },
+  "settings": {
+    "THEMES": "The nine colour themes (Dark: Midnight, Graphite, Deep ocean; Neon: Cyberpunk, Synthwave, Galaxy, Spotlight; Bright: Paper, Pastel).",
+    "createThemePicker": "The theme dropdown: applies a theme to every visualizer on the page and remembers it.",
+    "currentMotion": "The motion profile in use (Smooth until the page allows the choice).",
+    "setMotion": "Chooses the motion for every visualizer on the page and remembers it.",
+    "motionAllowed": "Whether the viewer may choose the motion on this page.",
+    "setMotionAllowed": "Turns the motion choice on (the saved motion) or off (Smooth).",
+    "onMotionChange": "Runs a function whenever the motion, or whether it may be chosen, changes.",
+    "createMotionPicker": "The Motion dropdown for a control bar; hidden while the choice is off.",
+    "mountMotionSetting": "A labelled Motion dropdown placed in a page element; hidden while the choice is off."
+  },
+  "css": {
+    "css/player.css": "The player box (.vz-*): layout, controls, code and variables panels, legend, step note, operation pop-up, callout (.co), shortcuts list, fullscreen and recording-frame modes, phone layout, syntax colours.",
+    "css/themes.css": "The nine themes: .vz holds Midnight's box tokens, each .vz[data-theme] block overrides the colours (palette, syntax, box, views)."
+  }
+}

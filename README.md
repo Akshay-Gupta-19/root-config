@@ -4,6 +4,9 @@ Public collection of shared npm packages for the workspace, published under `@ak
 - `@akshayanimateddsa/root-config` (this folder): generic tooling configuration, below.
 - [`@akshayanimateddsa/visual-lab`](packages/visual-lab/README.md): generic views for step-by-step
   algorithm animations (array, graph, tree, recursion tree), plain DOM and SVG.
+- [`@akshayanimateddsa/lab-player`](packages/lab-player/README.md): the step player for visual labs
+  (snapshot frames, controls, code and variables panels, shortcuts, fullscreen modes, nine themes,
+  motion), built on `visual-lab`.
 - [`@akshayanimateddsa/docs-check`](packages/docs-check/README.md): a command that checks a
   repository's agent docs stay true to it (rule files, ADRs, roadmap lists, README status).
 Technical rules and the release process for agents: [`AGENT.md`](AGENT.md) (loaded by `CLAUDE.md`).
@@ -40,8 +43,8 @@ export default [...base];
 Bump `version` in `package.json` in a PR; merging it into `main` publishes it
 (`.github/workflows/publish.yml`) through npm **trusted publishing**: no stored token.
 
-One-time setup per new package (npm account `akshayanimateddsa`; done for `root-config`, needed
-done for `visual-lab`; needed once for `docs-check`). The first publish needs a token, because a trusted publisher can only be set
+One-time setup per new package (npm account `akshayanimateddsa`; done for `root-config`,
+`visual-lab` and `docs-check`; needed once for `lab-player`). The first publish needs a token, because a trusted publisher can only be set
 on a package that already exists:
 1. npmjs.com → avatar → **Access Tokens** → **Generate New Token** → **Granular Access Token**:
    name `<package> first publish`, expiration 7 days, **Packages and scopes** → **Read and write**
@@ -64,22 +67,26 @@ npm run check
 License: MIT
 
 ## Status
-_Last updated: 2026-11-21_
+_Last updated: 2026-11-24_
 
 **Recent changes**
-- New package `@akshayanimateddsa/docs-check` (`packages/docs-check`): the `docs-check` command checks
-  a repo's agent docs (AGENT.md / CLAUDE.md pairs, rule tree, named paths, ADR numbering and index,
-  roadmap list numbers and references, README status); settings in the repo's `package.json`. This
-  repo runs it on itself in `npm test`. Code and test conventions added to `AGENT.md`.
-- Rules: `AGENT.md` holds only technical rules; `packages/visual-lab` has its own `AGENT.md`.
-- New package `@akshayanimateddsa/visual-lab` (`packages/visual-lab`), ported from the Akshay
-  Animated DSA Visual Lab, with a catalogue of every export and tests.
+- New package `@akshayanimateddsa/lab-player` 0.1.0 (`packages/lab-player`): the DSA Visual Lab's
+  step player moved here (trace, player, the lab box with controls, code and variables panels,
+  shortcuts, fullscreen modes, the nine themes, the motion setting, legend, callout), in TypeScript,
+  with site-specific parts as options; catalogue and tests.
+- `visual-lab` 0.2.0: tones `unreviewed`, `waiting`, `existing`, `pressure`, `warning` and the palette
+  colours `--indigo`, `--orange` (set in all nine themes).
+- New package `docs-check` (the `docs-check` command); this repo runs it in `npm test`.
 
 **Current state**
-- On npm: `root-config` 0.1.0 and `visual-lab` 0.1.0, published through trusted publishing.
-- `docs-check` 0.1.0 is not on npm yet: its first publish needs the one-time token (Releasing).
-- `visual-lab` is used by the Akshay Animated DSA Visual Lab.
+- On npm: `root-config` 0.1.0, `visual-lab` 0.1.0, `docs-check` 0.1.0.
+- Not on npm yet: `visual-lab` 0.2.0 and `lab-player` 0.1.0. Publishing runs in GitHub Actions,
+  which has no minutes until 2026-12-01; `lab-player`'s first publish also needs the one-time token
+  (Releasing).
+- `visual-lab` is used by the Akshay Animated DSA Visual Lab; it moves to `lab-player` once published.
 
 **Next steps**
-- Publish `docs-check` 0.1.0 (one-time token, then trusted publisher), so other repos can use it.
-- Other sites' labs build on `visual-lab`; generic views they need go into it.
+- Publish `visual-lab` 0.2.0 and `lab-player` 0.1.0 (one-time token for `lab-player`, then its
+  trusted publisher).
+- Other sites' labs build on both; generic views they need go into `visual-lab`, player parts into
+  `lab-player`.

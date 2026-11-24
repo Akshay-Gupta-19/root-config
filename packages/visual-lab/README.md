@@ -26,7 +26,7 @@ tree.update({ nodes: [{ id: 1, value: 8, left: 2 }, { id: 2, value: 3 }], tones:
 - A view has `el` and `update(state, ctx)`; `update` draws from the state alone, and `ctx.duration`
   (ms) only animates the change. Each file's header comment describes its state.
 - Tones (`current`, `compare`, `discovered`, `done`, `found`, `target`, `removed`, `muted`, `new`,
-  `path`) are coloured through `--tone` (`css/tokens.css`).
+  `path`, `unreviewed`, `waiting`, `existing`, `pressure`, `warning`) are coloured through `--tone` (`css/tokens.css`).
 - Colours, fonts and timing are CSS custom properties: set your own or load `css/tokens.css`.
   `setMotionEase` chooses how tweens ease.
 - A site without a build step copies `dist/` and `css/` into its static files and imports
