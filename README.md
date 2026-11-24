@@ -70,23 +70,20 @@ License: MIT
 _Last updated: 2026-11-24_
 
 **Recent changes**
-- New package `@akshayanimateddsa/lab-player` 0.1.0 (`packages/lab-player`): the DSA Visual Lab's
-  step player moved here (trace, player, the lab box with controls, code and variables panels,
-  shortcuts, fullscreen modes, the nine themes, the motion setting, legend, callout), in TypeScript,
-  with site-specific parts as options; catalogue and tests.
-- `visual-lab` 0.2.0: tones `unreviewed`, `waiting`, `existing`, `pressure`, `warning` and the palette
-  colours `--indigo`, `--orange` (set in all nine themes).
-- New package `docs-check` (the `docs-check` command); this repo runs it in `npm test`.
+- `lab-player` 0.2.0: the lab page frame (`createLabShell`, `css/shell.css`: top bar, sidebar of
+  groups and numbered modules, page header, cards, stage cards, buttons, form controls), moved from
+  the DSA Visual Lab with its class names; colours through `--lab-accent` / `--lab-accent-2` /
+  `--lab-gradient`. `.vz-detail` text is hidden in the player's fullscreen modes.
+- `lab-player` 0.1.0: the DSA lab's step player (trace, player, the lab box, nine themes, motion).
+- `visual-lab` 0.2.0: tones `unreviewed`, `waiting`, `existing`, `pressure`, `warning`; colours
+  `--indigo`, `--orange`.
 
 **Current state**
-- On npm: `root-config` 0.1.0, `visual-lab` 0.1.0, `docs-check` 0.1.0.
-- Not on npm yet: `visual-lab` 0.2.0 and `lab-player` 0.1.0. Publishing runs in GitHub Actions,
-  which has no minutes until 2026-12-01; `lab-player`'s first publish also needs the one-time token
-  (Releasing).
-- `visual-lab` is used by the Akshay Animated DSA Visual Lab; it moves to `lab-player` once published.
+- On npm: `root-config` 0.1.0, `visual-lab` 0.2.0, `lab-player` 0.1.0 (0.2.0 on merge), `docs-check` 0.1.0.
+- Used by the website's HLD lab; the DSA site still has its own copy of the page frame until it
+  switches.
 
 **Next steps**
-- Publish `visual-lab` 0.2.0 and `lab-player` 0.1.0 (one-time token for `lab-player`, then its
-  trusted publisher).
-- Other sites' labs build on both; generic views they need go into `visual-lab`, player parts into
+- `lab-player`: trusted publisher on npmjs.com and the one-time token deleted (Releasing).
+- Other sites' labs build on both; generic views go into `visual-lab`, player and page parts into
   `lab-player`.

@@ -36,12 +36,16 @@ viz.load(t.frames);
 | `createControls`, `createCodePanel`, `createVarsPanel`, `createLegend`, `CalloutView` | its parts, for a site that lays out its own box |
 | `THEMES`, `createThemePicker` | Midnight, Graphite, Deep ocean, Cyberpunk, Synthwave, Galaxy, Spotlight, Paper, Pastel |
 | `setMotionAllowed`, `setMotion`, `currentMotion`, … | Crisp / Smooth / Bouncy; off (Smooth) until the site allows the choice |
+| `createLabShell` + `css/shell.css` | the page around the box: top bar, sidebar of groups and numbered modules, page header, cards, buttons, form controls |
 
 Keys: Space plays, ← → step, Home / End, F fullscreen, V recording frame (1080×1920), C code
 fullscreen, B code in the recording frame, H code column, I inputs, Q question, Ctrl + ← → scroll
 cut-off content, ? lists them all.
 
 ## Site settings
+- `--lab-accent`, `--lab-accent-2`, `--lab-gradient` colour the page frame (default: the DSA lab's
+  cyan and green); the page's own tokens (`--bg`, `--surface`, `--text`, …) do the rest.
+- Mark detail text `.vz-detail`: it shows in window mode and hides in fullscreen.
 - `--vz-watermark-text` (a CSS string, e.g. `"example.com"`) on `.vz` draws the site's name faintly
   across the animation; unset, there is none.
 - `createVisualizer(root, { inputs, question })`: the page's form (default: a `<form>` right before

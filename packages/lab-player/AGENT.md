@@ -8,9 +8,10 @@ and how to use it: [`README.md`](README.md).
 
 ## Purpose
 The step player every site's visual lab shares: recording a run as frames, playing them, and the
-box around the views (controls, code, variables, shortcuts, fullscreen modes, themes, motion). The
-views themselves are `@akshayanimateddsa/visual-lab`'s (or a site's own); this package never draws
-a data structure.
+box around the views (controls, code, variables, shortcuts, fullscreen modes, themes, motion); and
+the lab page frame around the box (`shell.ts`, `css/shell.css`: top bar, sidebar, page header,
+cards, form controls). The views themselves are `@akshayanimateddsa/visual-lab`'s (or a site's own);
+this package never draws a data structure.
 
 ## Invariants
 - Frames are complete snapshots. The player never undoes anything: showing step i is the same
@@ -18,8 +19,9 @@ a data structure.
   step passes that key again, and is then replaced, not merged. `step()` deep-copies
   (`structuredClone`), so state holds no functions, DOM nodes or class instances.
 - `line` is 1-based in the code shown, and may be a list of lines.
-- Fullscreen shows only the animation: the header, legend and step note are hidden there
-  (`css/player.css`), so explanations never go into a panel.
+- Fullscreen shows only the animation: the header, legend and step note are hidden there, and so
+  is anything marked `.vz-detail` (`css/player.css`). Window mode may explain more; fullscreen keeps
+  labels, essentials and pop-ups (the workspace's visual-lab rule).
 - Generic only: no site's routes, auth, prices, demo copy or brand. Site-specific behaviour is an
   option the site passes: the inputs form and question (`createVisualizer`), who may change the
   motion (`setMotionAllowed`, off by default), the watermark text (`--vz-watermark-text`), and the
@@ -30,6 +32,10 @@ a data structure.
   page; every `.vz[data-theme]` block sets the whole palette too (`--cyan` … `--red`, `--indigo`,
   `--orange`), so every visual-lab tone has a colour in every theme. A new palette colour or tone
   colour is set in all nine (`test/themes.test.js`). A theme block holds no rules for one site's views.
+- The page frame takes the site's nav as data (`createLabShell`); it knows no curriculum, prices or
+  sign-in. Its class names are the DSA lab's (`lib-*`, `side-*`), so that site can switch to it
+  unchanged; colours come from the page's tokens and `--lab-accent` / `--lab-accent-2` /
+  `--lab-gradient`, never fixed values.
 - A key added to the visualizer is added to its "?" list in `src/visualizer.ts`; keys stop while the
   list is open, and letter keys ignore Ctrl / Alt / Cmd (Ctrl+C copies).
 

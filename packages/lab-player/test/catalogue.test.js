@@ -13,12 +13,12 @@ test('the package was found and has exports', () => {
 });
 
 test('every export is in the catalogue, and every catalogue entry is an export', () => {
-  const entries = { ...catalogue.player, ...catalogue.parts, ...catalogue.settings };
+  const entries = { ...catalogue.player, ...catalogue.parts, ...catalogue.settings, ...catalogue.page };
   assert.deepEqual(Object.keys(entries).sort(), Object.keys(lib).sort());
   for (const line of Object.values(entries)) assert.ok(line.length > 10);
 });
 
 test('every stylesheet in the catalogue exists, and every stylesheet is in it', () => {
   for (const file of Object.keys(catalogue.css)) assert.ok(existsSync(new URL(`../${file}`, import.meta.url)), file);
-  assert.deepEqual(Object.keys(catalogue.css).sort(), ['css/player.css', 'css/themes.css']);
+  assert.deepEqual(Object.keys(catalogue.css).sort(), ['css/player.css', 'css/shell.css', 'css/themes.css']);
 });
