@@ -44,7 +44,7 @@ Bump `version` in `package.json` in a PR; merging it into `main` publishes it
 (`.github/workflows/publish.yml`) through npm **trusted publishing**: no stored token.
 
 One-time setup per new package (npm account `akshayanimateddsa`; done for `root-config`,
-`visual-lab` and `docs-check`; needed once for `lab-player`). The first publish needs a token, because a trusted publisher can only be set
+`visual-lab`, `docs-check` and `lab-player`). The first publish needs a token, because a trusted publisher can only be set
 on a package that already exists:
 1. npmjs.com → avatar → **Access Tokens** → **Generate New Token** → **Granular Access Token**:
    name `<package> first publish`, expiration 7 days, **Packages and scopes** → **Read and write**
@@ -67,9 +67,10 @@ npm run check
 License: MIT
 
 ## Status
-_Last updated: 2026-11-24_
+_Last updated: 2026-11-25_
 
 **Recent changes**
+- `lab-player` 0.2.1: no code change; the first release through npm trusted publishing (no token).
 - `lab-player` 0.2.0: the lab page frame (`createLabShell`, `css/shell.css`: top bar, sidebar of
   groups and numbered modules, page header, cards, stage cards, buttons, form controls), moved from
   the DSA Visual Lab with its class names; colours through `--lab-accent` / `--lab-accent-2` /
@@ -79,11 +80,11 @@ _Last updated: 2026-11-24_
   `--indigo`, `--orange`.
 
 **Current state**
-- On npm: `root-config` 0.1.0, `visual-lab` 0.2.0, `lab-player` 0.1.0 (0.2.0 on merge), `docs-check` 0.1.0.
+- On npm: `root-config` 0.1.0, `visual-lab` 0.2.0, `lab-player` 0.2.1, `docs-check` 0.1.0; `lab-player`
+  publishes through trusted publishing (no stored token).
 - Used by the website's HLD lab; the DSA site still has its own copy of the page frame until it
   switches.
 
 **Next steps**
-- `lab-player`: trusted publisher on npmjs.com and the one-time token deleted (Releasing).
 - Other sites' labs build on both; generic views go into `visual-lab`, player and page parts into
   `lab-player`.
