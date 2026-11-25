@@ -43,8 +43,8 @@ export default [...base];
 Bump `version` in `package.json` in a PR; merging it into `main` publishes it
 (`.github/workflows/publish.yml`) through npm **trusted publishing**: no stored token.
 
-One-time setup per new package (npm account `akshayanimateddsa`; done for `visual-lab`,
-`docs-check` and `lab-player`). The first publish needs a token, because a trusted publisher can only be set
+One-time setup per new package (npm account `akshayanimateddsa`; done for `root-config`,
+`visual-lab`, `docs-check` and `lab-player`). The first publish needs a token, because a trusted publisher can only be set
 on a package that already exists:
 1. npmjs.com → avatar → **Access Tokens** → **Generate New Token** → **Granular Access Token**:
    name `<package> first publish`, expiration 7 days, **Packages and scopes** → **Read and write**
@@ -75,8 +75,8 @@ License: MIT
 _Last updated: 2026-11-25_
 
 **Recent changes**
-- `visual-lab` 0.2.1, `docs-check` 0.1.1: no code change; first releases through their new trusted
-  publishers. "Releasing" now says to tick **Allow npm publish** and to publish once soon after setup.
+- `root-config` 0.1.1, `visual-lab` 0.2.1, `docs-check` 0.1.1: no code change; first releases
+  through their new trusted publishers. "Releasing" now says to tick **Allow npm publish** and to publish once soon after setup.
 - `lab-player` 0.2.1: no code change; the first release through npm trusted publishing (no token).
 - `lab-player` 0.2.0: the lab page frame (`createLabShell`, `css/shell.css`: top bar, sidebar of
   groups and numbered modules, page header, cards, stage cards, buttons, form controls), moved from
@@ -87,9 +87,8 @@ _Last updated: 2026-11-25_
   `--indigo`, `--orange`.
 
 **Current state**
-- On npm: `root-config` 0.1.0, `visual-lab` 0.2.1, `lab-player` 0.2.1, `docs-check` 0.1.1, all published
-  through trusted publishing (no stored token); `root-config` itself needs its publisher checked
-  before its next release.
+- On npm: `root-config` 0.1.1, `visual-lab` 0.2.1, `lab-player` 0.2.1, `docs-check` 0.1.1, all published
+  through trusted publishing (no stored token).
 - Used by the website's HLD lab; the DSA site still has its own copy of the page frame until it
   switches.
 
