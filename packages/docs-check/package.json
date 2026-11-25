@@ -1,6 +1,6 @@
 {
   "name": "@akshayanimateddsa/docs-check",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Checks that a repository's agent docs stay true to it: AGENT.md / CLAUDE.md pairs and the rule tree, file paths the rule files name, ADR numbering and index, roadmap list numbers and references, and the README status section.",
   "license": "MIT",
   "type": "module",
