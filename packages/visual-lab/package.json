@@ -1,6 +1,6 @@
 {
   "name": "@akshayanimateddsa/visual-lab",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Generic views for step-by-step algorithm animations (array, graph, tree, recursion tree), drawn from plain state objects. Plain DOM and SVG, no framework.",
   "license": "MIT",
   "type": "module",
