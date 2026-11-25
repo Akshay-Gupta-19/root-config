@@ -1,6 +1,6 @@
 {
   "name": "@akshayanimateddsa/root-config",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Generic, public shared tooling configuration (TypeScript, ESLint, Prettier, EditorConfig) for the workspace.",
   "license": "MIT",
   "type": "module",
