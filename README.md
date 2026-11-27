@@ -72,16 +72,16 @@ npm run check
 License: MIT
 
 ## Status
-_Last updated: 2026-11-25_
+_Last updated: 2026-11-27_
 
 **Recent changes**
-- `root-config` 0.1.1, `visual-lab` 0.2.1, `docs-check` 0.1.1: no code change; first releases
-  through their new trusted publishers. "Releasing" now says to tick **Allow npm publish** and to publish once soon after setup.
-- `lab-player` 0.2.1: no code change; the first release through npm trusted publishing (no token).
-- `lab-player` 0.2.0: the lab page frame (`createLabShell`, `css/shell.css`: top bar, sidebar of
-  groups and numbered modules, page header, cards, stage cards, buttons, form controls), moved from
-  the DSA Visual Lab with its class names; colours through `--lab-accent` / `--lab-accent-2` /
-  `--lab-gradient`. `.vz-detail` text is hidden in the player's fullscreen modes.
+- Docs audit: `visual-lab`'s rules now list the tone aliases `active` and `error` (in
+  `css/tokens.css`); every other rule file matched the code.
+- `root-config` 0.1.1, `visual-lab` 0.2.1, `docs-check` 0.1.1, `lab-player` 0.2.1: no code change; the
+  first releases through npm trusted publishing (no token). "Releasing" says to tick **Allow npm
+  publish** and to publish once soon after setup.
+- `lab-player` 0.2.0: the lab page frame (`createLabShell`, `css/shell.css`), moved from the DSA
+  Visual Lab with its class names; `.vz-detail` text is hidden in the player's fullscreen modes.
 - `lab-player` 0.1.0: the DSA lab's step player (trace, player, the lab box, nine themes, motion).
 - `visual-lab` 0.2.0: tones `unreviewed`, `waiting`, `existing`, `pressure`, `warning`; colours
   `--indigo`, `--orange`.
@@ -89,8 +89,9 @@ _Last updated: 2026-11-25_
 **Current state**
 - On npm: `root-config` 0.1.1, `visual-lab` 0.2.1, `lab-player` 0.2.1, `docs-check` 0.1.1, all published
   through trusted publishing (no stored token).
-- Used by the website's HLD lab; the DSA site still has its own copy of the page frame until it
-  switches.
+- `akshay-website`'s HLD lab uses the player and the page frame; the DSA site uses the player
+  (vendored 0.1.0) and still has its own copy of the page frame until it switches.
+- No repo `extends` the root tooling config yet.
 
 **Next steps**
 - Other sites' labs build on both; generic views go into `visual-lab`, player and page parts into
