@@ -13,7 +13,9 @@ and how to use it: [`README.md`](README.md).
 - Generic only: no demo's steps, explanations or copy, no site's routes, auth or prices. Labels in a
   view stay bare (a name, a value); explaining belongs to the page.
 - Tones are one vocabulary (`current`, `compare`, `discovered`, `done`, `found`, `target`, `removed`,
-  `muted`, `new`, `path`, `unreviewed`, `waiting`, `existing`, `pressure`, `warning`), coloured through `--tone` (`css/tokens.css`); a new tone is styled for every view.
+  `muted`, `new`, `path`, `unreviewed`, `waiting`, `existing`, `pressure`, `warning`, and the aliases
+  `active` = `current`, `error` = `removed`), coloured through `--tone` (`css/tokens.css`); a new tone
+  is styled for every view.
 - Nothing touches the DOM at import time (the package loads in Node; `test/catalogue.test.js` imports it).
 - Colours, fonts and timing are CSS custom properties; a site sets its own or loads `css/tokens.css`.
   `setMotionEase` lets a site choose how tweens ease (its own motion setting).
