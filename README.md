@@ -9,6 +9,9 @@ Public collection of shared npm packages for the workspace, published under `@ak
   motion), built on `visual-lab`.
 - [`@akshayanimateddsa/docs-check`](packages/docs-check/README.md): a command that checks a
   repository's agent docs stay true to it (rule files, ADRs, roadmap lists, README status).
+- [`@akshayanimateddsa/site-ui`](packages/site-ui/README.md): generic site components: an
+  Outlook-style calendar (day, week, month) with 1:1 session booking, a modal dialog, and the pure
+  date and slot maths behind them; themed with CSS variables.
 Technical rules and the release process for agents: [`AGENT.md`](AGENT.md) (loaded by `CLAUDE.md`).
 
 | File | Purpose |
@@ -44,7 +47,7 @@ Bump `version` in `package.json` in a PR; merging it into `main` publishes it
 (`.github/workflows/publish.yml`) through npm **trusted publishing**: no stored token.
 
 One-time setup per new package (npm account `akshayanimateddsa`; done for `root-config`,
-`visual-lab`, `docs-check` and `lab-player`). The first publish needs a token, because a trusted publisher can only be set
+`visual-lab`, `docs-check` and `lab-player`; `site-ui` is next). The first publish needs a token, because a trusted publisher can only be set
 on a package that already exists:
 1. npmjs.com → avatar → **Access Tokens** → **Generate New Token** → **Granular Access Token**:
    name `<package> first publish`, expiration 7 days, **Packages and scopes** → **Read and write**
@@ -72,27 +75,26 @@ npm run check
 License: MIT
 
 ## Status
-_Last updated: 2026-11-27_
+_Last updated: 2026-11-28_
 
 **Recent changes**
-- Docs audit: `visual-lab`'s rules now list the tone aliases `active` and `error` (in
-  `css/tokens.css`); every other rule file matched the code.
-- `root-config` 0.1.1, `visual-lab` 0.2.1, `docs-check` 0.1.1, `lab-player` 0.2.1: no code change; the
-  first releases through npm trusted publishing (no token). "Releasing" says to tick **Allow npm
-  publish** and to publish once soon after setup.
-- `lab-player` 0.2.0: the lab page frame (`createLabShell`, `css/shell.css`), moved from the DSA
-  Visual Lab with its class names; `.vz-detail` text is hidden in the player's fullscreen modes.
-- `lab-player` 0.1.0: the DSA lab's step player (trace, player, the lab box, nine themes, motion).
-- `visual-lab` 0.2.0: tones `unreviewed`, `waiting`, `existing`, `pressure`, `warning`; colours
-  `--indigo`, `--orange`.
+- `site-ui` 0.1.0 (new): the broad package for generic site components. An Outlook-style calendar
+  (day, week, month; small month, time grid with a now line, overlap columns, drag to pick a span),
+  the booking calendar (availability one-off or weekly, session lengths, requests to confirm or
+  decline, a student view of open slots), a modal dialog, and the pure date, slot and layout maths
+  (`site-ui/slots` for servers). Themed with `--cal-*` tokens.
+- Rule: few, broad packages. New shared code joins the package that fits its kind (`AGENT.md`).
+- Docs audit: `visual-lab`'s rules list the tone aliases `active` and `error`.
+- `root-config` 0.1.1, `visual-lab` 0.2.1, `docs-check` 0.1.1, `lab-player` 0.2.1: the first releases
+  through npm trusted publishing (no token).
 
 **Current state**
-- On npm: `root-config` 0.1.1, `visual-lab` 0.2.1, `lab-player` 0.2.1, `docs-check` 0.1.1, all published
-  through trusted publishing (no stored token).
+- On npm: `root-config` 0.1.1, `visual-lab` 0.2.1, `lab-player` 0.2.1, `docs-check` 0.1.1.
+  `site-ui` 0.1.0 is not published yet: its first publish needs the one-time token ("Releasing").
 - `akshay-website`'s HLD lab uses the player and the page frame; the DSA site uses the player
   (vendored 0.1.0) and still has its own copy of the page frame until it switches.
 - No repo `extends` the root tooling config yet.
 
 **Next steps**
-- Other sites' labs build on both; generic views go into `visual-lab`, player and page parts into
-  `lab-player`.
+- Publish `site-ui` 0.1.0 ("Releasing" steps 1–6), then the DSA site vendors it for its `/calendar`.
+- Other sites' labs build on `visual-lab` and `lab-player`; other generic site parts go into `site-ui`.

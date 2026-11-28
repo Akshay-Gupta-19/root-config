@@ -1,0 +1,72 @@
+/*
+ * The modal dialog (.ui-dialog, openDialog in src/dialog.ts) and its form fields (.ui-form,
+ * .ui-field, .ui-row, .ui-check) and buttons (.ui-btn). Its tokens default to the calendar's
+ * (--cal-*), so a site that themes the calendar themes its dialogs too; set --ui-* to style the
+ * dialog on its own. The dialog sits in document.body, outside .cal, so a site sets the tokens it
+ * uses on :root (or on .ui-dialog) as well.
+ */
+.ui-dialog {
+  --ui-bg: var(--cal-surface, #ffffff);
+  --ui-text: var(--cal-text, #242424);
+  --ui-muted: var(--cal-muted, #616161);
+  --ui-border: var(--cal-border-strong, #c7c7c7);
+  --ui-accent: var(--cal-accent, #0f6cbd);
+  --ui-accent-contrast: var(--cal-accent-contrast, #ffffff);
+  --ui-danger: var(--cal-tone-declined, #c50f1f);
+  --ui-radius: var(--cal-radius-lg, 8px);
+  --ui-font: var(--cal-font, "Segoe UI", system-ui, sans-serif);
+
+  width: min(440px, calc(100vw - 32px));
+  padding: 0;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius);
+  background: var(--ui-bg);
+  color: var(--ui-text);
+  font-family: var(--ui-font);
+  font-size: 14px;
+  box-shadow: 0 16px 48px rgb(0 0 0 / 0.35);
+}
+.ui-dialog::backdrop { background: rgb(0 0 0 / 0.45); }
+.ui-dialog *, .ui-dialog *::before, .ui-dialog *::after { box-sizing: border-box; }
+.ui-dialog-box { padding: 20px; }
+.ui-dialog-title { margin: 0 0 12px; font-size: 18px; font-weight: 600; text-transform: none; }
+.ui-dialog-error { margin: 12px 0 0; padding: 8px 10px; border-radius: 4px; background: color-mix(in srgb, var(--ui-danger) 14%, transparent); color: var(--ui-text); font-size: 13px; }
+.ui-dialog-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+.ui-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--ui-border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ui-text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ui-btn:hover { background: color-mix(in srgb, var(--ui-text) 8%, transparent); }
+.ui-btn:disabled { opacity: 0.6; cursor: wait; }
+.ui-btn--primary { background: var(--ui-accent); border-color: var(--ui-accent); color: var(--ui-accent-contrast); }
+.ui-btn--primary:hover { background: color-mix(in srgb, var(--ui-accent) 85%, black); }
+.ui-btn--danger { border-color: var(--ui-danger); color: var(--ui-danger); }
+.ui-btn--danger:hover { background: color-mix(in srgb, var(--ui-danger) 12%, transparent); }
+.ui-btn:focus-visible, .ui-dialog :focus-visible { outline: 2px solid var(--ui-accent); outline-offset: 1px; }
+.ui-form { display: grid; gap: 12px; }
+.ui-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ui-field { display: grid; gap: 4px; font-size: 13px; color: var(--ui-muted); }
+.ui-field[hidden] { display: none; }
+.ui-check { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.ui-dialog input, .ui-dialog textarea, .ui-dialog select {
+  width: 100%;
+  min-width: 0;
+  padding: 7px 9px;
+  border: 1px solid var(--ui-border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ui-text);
+  font: inherit;
+  color-scheme: light dark;
+}
+.ui-dialog input[type="checkbox"] { width: auto; accent-color: var(--ui-accent); }
+.ui-dialog textarea { resize: vertical; }
+.bk-details { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; }
+.bk-details dt { color: var(--ui-muted); }
+.bk-details dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }

@@ -11,6 +11,7 @@ AGENT.md                            ← you are here: repo-wide technical rules,
 ├── packages/visual-lab/AGENT.md    @akshayanimateddsa/visual-lab: generic algorithm-animation views
 ├── packages/lab-player/AGENT.md    @akshayanimateddsa/lab-player: the labs' step player (frames, controls, code, themes)
 ├── packages/docs-check/AGENT.md    @akshayanimateddsa/docs-check: checks a repo's agent docs stay true to it
+├── packages/site-ui/AGENT.md       @akshayanimateddsa/site-ui: generic site components (calendar, booking, dialog)
 ├── scripts/validate.mjs            config sanity check (`npm run build`)
 ├── .github/workflows/ci.yml        lint + build + test + pack check on every push to main and every PR
 └── .github/workflows/publish.yml   publishes every package whose version npm doesn't have yet
@@ -25,12 +26,18 @@ in the same change.
   ESLint, Prettier and EditorConfig settings) and `packages/*`: today `@akshayanimateddsa/visual-lab`
   (the websites' visual-lab views: array, graph, tree, recursion tree),
   `@akshayanimateddsa/lab-player` (the labs' step player: frames, controls, code and variables
-  panels, shortcuts, fullscreen modes, nine themes, motion; built on visual-lab) and
+  panels, shortcuts, fullscreen modes, nine themes, motion; built on visual-lab),
   `@akshayanimateddsa/docs-check` (a command that checks a repo's agent docs: rule-file pairs, rule
-  tree, paths, ADRs, roadmap lists, README status). Only generic pieces live here:
+  tree, paths, ADRs, roadmap lists, README status) and `@akshayanimateddsa/site-ui` (generic site
+  components: an Outlook-style calendar, the booking calendar, a dialog, and the pure date and slot
+  maths behind them). Only generic pieces live here:
   a demo's steps, explanations and page stay in the website that sells or shows it. Reels and other media never depend on
   website packages; the only code both sides may share is pure, headless helpers (no DOM, markup or
   framework).
+- **Few, broad packages.** New shared code joins the package that fits its kind: the root (tooling
+  settings only), `visual-lab` (lab views), `lab-player` (lab player and page frame), `docs-check`
+  (doc checks), `site-ui` (every other generic site component, as a folder inside it). A new
+  package only when none fits, with the owner's approval; its PR says which kinds it will hold.
 
 ## Releasing
 - Publishing is automatic: `.github/workflows/publish.yml` runs on every push to `main` and
@@ -48,7 +55,7 @@ in the same change.
   them, and must never reference `workspace-meta` (private). Packages here depend on each other only
   by their published names, and have no runtime dependencies outside this repo. A package that
   depends on another builds after it: the root `build` script lists the order (visual-lab before
-  lab-player).
+  lab-player; docs-check and site-ui depend on nothing).
 - No circular dependencies.
 
 ## Security & secret hygiene (PUBLIC REPO)
