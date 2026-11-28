@@ -66,8 +66,11 @@ export interface BookingCalendarOptions extends Pick<CalendarOptions, 'timeZone'
   mode: BookingMode;
   /** Admin mode only: a switch in the toolbar to see the student mode. */
   previewStudent?: boolean;
-  /** Loads everything shown (called at the start and after every change). */
-  load: () => Promise<BookingData>;
+  /**
+   * Loads everything shown, for the mode on screen (called at the start, after every change and when
+   * the admin switches mode: a site's server answers a student with taken times only).
+   */
+  load: (mode: BookingMode) => Promise<BookingData>;
   addAvailability?: (block: NewAvailability) => Promise<unknown>;
   deleteAvailability?: (id: string) => Promise<unknown>;
   saveMinutes?: (kind: string, minutes: number) => Promise<unknown>;
@@ -81,6 +84,7 @@ export interface BookingCalendarOptions extends Pick<CalendarOptions, 'timeZone'
 export interface BookingCalendar {
   calendar: Calendar;
   mode: () => BookingMode;
+  /** Switches mode and loads that mode's data. */
   setMode: (mode: BookingMode) => void;
   /** Loads the data again and redraws. */
   reload: () => Promise<void>;
@@ -169,7 +173,7 @@ export function createBookingCalendar(host: HTMLElement, options: BookingCalenda
 
   async function reload(): Promise<void> {
     try {
-      data = await options.load();
+      data = await options.load(mode);
       status.textContent = '';
       status.hidden = true;
       const bookable = data.kinds.filter((k) => k.minutes);
@@ -374,6 +378,7 @@ export function createBookingCalendar(host: HTMLElement, options: BookingCalenda
     mode = next;
     calendar.element.dataset.mode = mode;
     refresh();
+    void reload();
   }
 
   calendar.element.dataset.mode = mode;

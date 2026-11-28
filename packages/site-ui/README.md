@@ -33,7 +33,7 @@ createBookingCalendar(document.getElementById('calendar'), {
   mode: 'admin',                      // or 'student'
   previewStudent: true,               // admin: a switch to see the student view
   timeZone: 'Asia/Kolkata',
-  load: () => fetch('/api/booking').then((r) => r.json()),   // { kinds, availability, requests }
+  load: (mode) => fetch(`/api/booking?as=${mode}`).then((r) => r.json()),   // { kinds, availability, requests }
   addAvailability: (block) => post('/api/availability', block),
   deleteAvailability: (id) => del(`/api/availability/${id}`),
   saveMinutes: (kind, minutes) => put(`/api/kinds/${kind}`, { minutes }),
