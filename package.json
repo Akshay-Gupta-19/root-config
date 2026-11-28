@@ -27,7 +27,7 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "build": "node scripts/validate.mjs && npm run build -w packages/visual-lab -w packages/docs-check && npm run build -w packages/lab-player",
+    "build": "node scripts/validate.mjs && npm run build -w packages/visual-lab -w packages/docs-check -w packages/site-ui && npm run build -w packages/lab-player",
     "check": "npm run lint && npm run build && npm test && npm pack --dry-run && npm pack --dry-run --workspaces",
     "test": "npm test --workspaces && node packages/docs-check/dist/cli.js"
   },

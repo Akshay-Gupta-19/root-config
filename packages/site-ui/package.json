@@ -1,0 +1,41 @@
+{
+  "name": "@akshayanimateddsa/site-ui",
+  "version": "0.1.0",
+  "description": "Generic site components: an Outlook-style calendar (day, week, month) with availability and 1:1 session booking, a modal dialog, and the pure date and slot maths behind them. Plain DOM, no framework, themeable with CSS variables.",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akshay-Gupta-19/root-config.git",
+    "directory": "packages/site-ui"
+  },
+  "keywords": ["calendar", "booking", "scheduling", "dialog", "ui"],
+  "sideEffects": ["*.css"],
+  "files": ["dist", "css", "catalogue.json"],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./slots": {
+      "types": "./dist/calendar/slots.d.ts",
+      "import": "./dist/calendar/slots.js"
+    },
+    "./css/*": "./css/*",
+    "./catalogue.json": "./catalogue.json"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.json",
+    "test": "node --test \"test/*.test.js\"",
+    "check": "npm run build && npm test && npm pack --dry-run"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

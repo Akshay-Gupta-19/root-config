@@ -1,0 +1,45 @@
+{
+  "$comment": "Every export of @akshayanimateddsa/site-ui, one line each (test/catalogue.test.js checks this list against the code). Look here before writing a new site component: a generic one goes into this package.",
+  "calendar": {
+    "createCalendar": "An Outlook-style calendar in an element: toolbar (Today, ‹ ›, title, view switch), a small month in a sidebar, and Day / Week time grids (half-hour lines, red now line, side-by-side overlaps, drag to pick a span) or a Month of day cells with event chips.",
+    "CALENDAR_VIEWS": "The three views in switch order: day, week, month."
+  },
+  "booking": {
+    "createBookingCalendar": "The calendar with 1:1 booking: admin adds available blocks (one-off or weekly), sets session lengths, confirms or declines requests; student picks a session kind, sees open slots and requests one; admin can preview the student view.",
+    "NOTE_MAX": "The longest note a student can send with a request (500 characters)."
+  },
+  "slots": {
+    "expandAvailability": "Available blocks (one-off or repeating weekly until a day) as dated occurrences in a span, in a time zone.",
+    "openSlots": "The bookable slots: availability cut into back-to-back slots of a length, minus busy times and the past.",
+    "isOpenSlot": "Whether a span is exactly one open slot: the server's check before taking a booking.",
+    "overlaps": "Whether two spans share any time (touching ends don't)."
+  },
+  "layout": {
+    "eventsOnDay": "The events touching a day, in start order.",
+    "layoutDay": "An event's piece on a day of the time grid: its minutes from midnight and its column among overlapping events.",
+    "daySpan": "The instants a day starts and ends in a time zone."
+  },
+  "dates": {
+    "zonedParts": "An instant's wall-clock year, month, day, hour, minute and weekday in a time zone.",
+    "zonedTime": "The instant a time zone's clock shows given minutes past midnight on a day.",
+    "dayKeyOf": "The day ('YYYY-MM-DD') an instant falls on in a time zone.",
+    "minuteOfDay": "An instant's minutes since midnight in a time zone.",
+    "parseDayKey": "A day's year, month and day of month (throws on a malformed day).",
+    "addDays": "The day n days later (or earlier).",
+    "addMonths": "The same day of the month n months later, kept inside a shorter month.",
+    "weekdayOf": "A day's weekday (0 = Sunday).",
+    "daysBetween": "Whole days from one day to another.",
+    "startOfWeek": "The first day of a day's week (weeks start Monday unless told otherwise).",
+    "weekDays": "The 7 days of a day's week.",
+    "startOfMonth": "The first day of a day's month.",
+    "monthGrid": "A month as whole weeks (4–6 rows of 7 days), as a wall calendar shows it.",
+    "startOfDay": "The instant a day starts in a time zone."
+  },
+  "dialog": {
+    "openDialog": "A modal dialog on <dialog>: title, body, action buttons that may be async (errors shown inside, the dialog stays open)."
+  },
+  "css": {
+    "css/calendar.css": "The calendar and booking calendar: toolbar, sidebar, small month, time grid, month cells, event blocks and chips, booking panels, phone layout; every colour a --cal-* token (Outlook-like light defaults) a site sets to its theme.",
+    "css/dialog.css": "The modal dialog, its form fields and buttons, and the booking details list; tokens --ui-* default to the calendar's --cal-*."
+  }
+}
